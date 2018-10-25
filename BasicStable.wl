@@ -196,6 +196,11 @@ qrEulerChar::usage="qrEulerChar[rho,primsys,dimprim,q,r] calculates the two para
  subystems, and rho_lambda is the reduced density matrix on lambda.  The specialization at r=1 gives qEulerChar.";
 
 
+stateIndex::usage="qrEulerChar[rho,primsys,dimprim,q,r] calculates the two parameter alternating sum Sum_{lambda}(-1)^(N-|lambda|-1) Tr[rho^q]^r,
+ where the sum runs over all subsets lambda of primitive subystems, N is the number of primitive
+ subystems, and rho_lambda is the reduced density matrix on lambda.  The specialization at r=1 gives qEulerChar.";
+
+
 (* ::Subsubsection:: *)
 (*Renyi Entropy*)
 
@@ -488,6 +493,8 @@ stateMapToOperatorMap[statemap_]:=
 
 
 
+
+
 (* ::Section:: *)
 (*Entropies and Related*)
 
@@ -497,8 +504,11 @@ stateMapToOperatorMap[statemap_]:=
 
 
 index[rho_,primsys_,dimprim_,fun_]:=Module[{N=Length@primsys},
-(-1)^(N-1)*Total@Map[(-1)^Length@#*fun@reducedDensityMat[rho,#,dimprim]&,Subsets[primsys]]
+Total@Map[(-1)^Length@#*fun@reducedDensityMat[rho,#,dimprim]&,Subsets[primsys]]
 ];
+
+
+shiftedIndex[rho_,primsys_,dimprim_,fun_]:=(-1)*index[rho,primsys,dimprim,fun];
 
 
 (* ::Subsection:: *)
@@ -512,7 +522,7 @@ vNMatrixKernel:=MatrixFunction[vNKernel,#]&;
 vonNeumann[rho_?PositiveSemidefiniteMatrixQ]:=Tr[vNMatrixKernel@rho];
 
 
-interactionInfo[rho_,primsys_,dimprim_]:=index[rho,primsys,dimprim,vonNeumann];
+interactionInfo[rho_,primsys_,dimprim_]:=shiftedIndex[rho,primsys,dimprim,vonNeumann];
 
 
 (* ::Subsection:: *)
@@ -543,23 +553,23 @@ tsallis[rho_?PositiveSemidefiniteMatrixQ, q_]:=If[q===1,vonNeumann[rho],
 ];
 
 
-qInteractionInfo[rho_,primsys_,dimprim_,q_]:=index[rho,primsys,dimprim,tsallis[#,q]&];
+qInteractionInfo[rho_,primsys_,dimprim_,q_]:=shiftedIndex[rho,primsys,dimprim,tsallis[#,q]&];
 
 
 qPartitionFunc[rho_,q_]:=Tr[matrixPowerMod[rho,q]];
 
 
-qEulerChar[rho_,primsys_,dimprim_,q_]:=index[rho,primsys,dimprim,qPartitionFunc[#,q]&];
+qEulerChar[rho_,primsys_,dimprim_,q_]:=shiftedIndex[rho,primsys,dimprim,qPartitionFunc[#,q]&];
 
 
-qrEulerChar[rho_,primsys_,dimprim_,q_,r_]:=index[rho,primsys,dimprim,qPartitionFunc[#,q]^r&];
+qrEulerChar[rho_,primsys_,dimprim_,q_,r_]:=shiftedIndex[rho,primsys,dimprim,qPartitionFunc[#,q]^r&];
 
 
-tripleIndex[rho_,primsys_,dimprim_,q_,r_,\[Alpha]_]:=Module[{n},
+stateIndex[rho_,primsys_,dimprim_,q_,r_,\[Alpha]_,w_]:=Module[{N,hilbDim},
+N=Length@primsys;
 hilbDim[M_]:=Dimensions[M][[1]];
-index[rho,primsys,dimprim, hilbDim[#]^\[Alpha]*qPartitionFunc[#,q]^r&];
-
-
+w^N*index[rho,primsys,dimprim, hilbDim[#]^\[Alpha]*qPartitionFunc[#,q]^r&]
+];
 
 
 (* ::Subsubsection:: *)
