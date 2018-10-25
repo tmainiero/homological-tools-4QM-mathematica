@@ -28,7 +28,7 @@ Id::usage="Id[n] is a synonym for IdentityMatrix[n].";
 IdSparse::usage="IdSparse[n] generates an n x n identity matrix as a sparse array.";
 
 
-(* ::Subsection::Closed:: *)
+(* ::Subsection:: *)
 (*Sugar*)
 
 
@@ -138,7 +138,7 @@ operator matrix on the second subsystem (of dimension 3); then partial cotrace r
 of the dimensions in 'dim'.  This function refers directly to extendOp.";
 
 
-(* ::Section:: *)
+(* ::Section::Closed:: *)
 (*Supplementary Operations*)
 
 
@@ -203,18 +203,18 @@ the q-deformed interaction information is defeind via the alternating sum Sum[(-
 
 qPartitionFunc::usage="qPartitionFunc[rho,q] calculates Tr[rho^q]";
 
-qEulerChar::usage="qEulerChar[rho,primsys,dimprim,q] calculates the alternating sum Sum[(-1)^(N-|lambda|-1) Tr[rho^q],
+qEulerChar::usage="qEulerChar[rho,primsys,dimprim][q] calculates the alternating sum Sum[(-1)^(N-|lambda|-1) Tr[rho^q],
  where the sum runs over all subsets lambda of primitive subystems, N is the number of primitive
  subystems, and rho_lambda is the reduced density matrix on lambda.  
 (q-1)*qEulerChar[rho,primsys,dimprim,q] is equal to qinteractionInfo[rho,primsys,dimprim,q].";
 
 
-qrEulerChar::usage="qrEulerChar[rho,primsys,dimprim,q,r] calculates the two parameter alternating sum Sum_{lambda}(-1)^(N-|lambda|-1) Tr[rho^q]^r,
+qrEulerChar::usage="qrEulerChar[rho,primsys,dimprim][q,r] calculates the two parameter alternating sum Sum_{lambda}(-1)^(N-|lambda|-1) Tr[rho^q]^r,
  where the sum runs over all subsets lambda of primitive subystems, N is the number of primitive
  subystems, and rho_lambda is the reduced density matrix on lambda.  The specialization at r=1 gives qEulerChar.";
 
 
-stateIndex::usage="qrEulerChar[rho,primsys,dimprim,q,r] calculates the two parameter alternating sum Sum_{lambda}(-1)^(N-|lambda|-1) Tr[rho^q]^r,
+stateIndex::usage="qrEulerChar[rho,primsys,dimprim][q,r] calculates the two parameter alternating sum Sum_{lambda}(-1)^(N-|lambda|-1) Tr[rho^q]^r,
  where the sum runs over all subsets lambda of primitive subystems, N is the number of primitive
  subystems, and rho_lambda is the reduced density matrix on lambda.  The specialization at r=1 gives qEulerChar.";
 
@@ -605,13 +605,13 @@ hilbDim[rho]^\[Alpha]*qPartitionFunc[rho,q]^r
 ];
 
 
-qEulerChar[rho_,primsys_,dimprim_,q_]:=shiftedIndex[rho,primsys,dimprim,qPartitionFunc[#,q]&];
+qEulerChar[rho_,primsys_,dimprim_][q_]:=shiftedIndex[rho,primsys,dimprim,qPartitionFunc[#,q]&];
 
 
-qrEulerChar[rho_,primsys_,dimprim_,q_,r_]:=shiftedIndex[rho,primsys,dimprim,qPartitionFunc[#,q]^r&];
+qrEulerChar[rho_,primsys_,dimprim_][q_,r_]:=shiftedIndex[rho,primsys,dimprim,qPartitionFunc[#,q]^r&];
 
 
-stateIndex[rho_,primsys_,dimprim_,q_,r_,\[Alpha]_,w_]:=w^(Length@primsys)*index[rho,primsys,dimprim, finStateDim[#][q,r,\[Alpha]]&];
+stateIndex[rho_,primsys_,dimprim_][q_,r_,\[Alpha]_,w_]:=w^(Length@primsys)*index[rho,primsys,dimprim, finStateDim[#][q,r,\[Alpha]]&];
 
 
 (* ::Subsubsection:: *)
