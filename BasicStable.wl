@@ -599,7 +599,7 @@ qInteractionInfo[rho_,primsys_,dimprim_,q_]:=shiftedIndex[rho,primsys,dimprim,ts
 qPartitionFunc[rho_,q_]:=Tr[matrixPowerMod[rho,q]];
 
 
-finStateDim[rho_][q_,r_,\[Alpha]_]:=Module[{hilbDim},
+finStateDim[rho_][\[Alpha]_,q_,r_]:=Module[{hilbDim},
 hilbDim[M_]:=Dimensions[M][[1]];
 hilbDim[rho]^\[Alpha]*qPartitionFunc[rho,q]^r
 ];
@@ -611,7 +611,7 @@ qEulerChar[rho_,primsys_,dimprim_][q_]:=shiftedIndex[rho,primsys,dimprim,qPartit
 qrEulerChar[rho_,primsys_,dimprim_][q_,r_]:=shiftedIndex[rho,primsys,dimprim,qPartitionFunc[#,q]^r&];
 
 
-stateIndex[rho_,primsys_,dimprim_][q_,r_,\[Alpha]_,w_]:=w^(Length@primsys)*index[rho,primsys,dimprim, finStateDim[#][q,r,\[Alpha]]&];
+stateIndex[rho_,primsys_,dimprim_][\[Alpha]_,q_,r_,w_]:=w^(Length@primsys)*index[rho,primsys,dimprim, finStateDim[#][\[Alpha],q,r]&];
 
 
 (* ::Subsubsection:: *)
