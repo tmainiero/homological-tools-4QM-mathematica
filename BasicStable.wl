@@ -154,7 +154,7 @@ Tr_systr[rho*op] given the dimension vector 'dimfull'.";
 (*Entropies and Related*)
 
 
-(* ::Subsection::Closed:: *)
+(* ::Subsection:: *)
 (*von Neumann Entropy and Interaction Information*)
 
 
@@ -165,6 +165,24 @@ density matrix rho defined on the primitive subsystems 'primsys' with dimension 
 interaction information is defined via the alternating sum Sum[(-1)^(N-|lambda|-1) S_(von Neumann)(rho_lambda)]
 , where the sum runs over all subsets lambda of primitive subystems, N is the number of primitive subystems, and
  rho_lambda is the reduced density matrix on lambda.";
+
+
+(* ::Subsection:: *)
+(*Euler Characteristics of GNS and Commutant Complexes*)
+
+
+eulerCharG::usage="eulerCharG[rho_,primsys_,dimprim_] computes the Euler characteristic of the GNS complex of a multipartite density state rho
+defined on the primitive subsystems 'primsys' with dimension vectosr 'dimprim'.";
+
+
+eulerCharGNS::usage="synonym for eulerCharG'.
+
+
+eulerCharE::usage="eulerCharG[rho_,primsys_,dimprim_] computes the Euler characteristic of the commutant complex of a multipartite density state rho
+defined on the primitive subsystems 'primsys' with dimension vectosr 'dimprim'.";
+
+
+eulerCharCom::usage="synonym for eulerCharE'.
 
 
 (* ::Subsection:: *)
@@ -387,7 +405,7 @@ extendOpSparse[op,sysop,sysfull,dim]
 (*Supplementary Operations*)
 
 
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*Join (tensor) States/Operators on disjoint/independent subsystems*)
 
 
@@ -526,6 +544,28 @@ interactionInfo[rho_,primsys_,dimprim_]:=shiftedIndex[rho,primsys,dimprim,vonNeu
 
 
 (* ::Subsection:: *)
+(*Euler Characteristics of GNS and Commutant Complexes*)
+
+
+GNSDim[rho_?SquareMatrixQ]:=(Dimensions[rho][[1]])*MatrixRank[rho];
+
+
+ComDim:=MatrixRank[#]^2&;
+
+
+eulerCharG[rho_,primsys_,dimprim_]:=shiftedIndex[rho,primsys,dimprim,GNSDim];
+
+
+eulerCharE[rho_,primsys_,dimprim_]:=shiftedIndex[rho,primsys,dimprim,ComDim];
+
+
+eulerCharGNS:=eulerCharG;
+
+
+eulerCharCom:=eulerCharE;
+
+
+(* ::Subsection:: *)
 (*q-deformed quantities*)
 
 
@@ -559,17 +599,19 @@ qInteractionInfo[rho_,primsys_,dimprim_,q_]:=shiftedIndex[rho,primsys,dimprim,ts
 qPartitionFunc[rho_,q_]:=Tr[matrixPowerMod[rho,q]];
 
 
+finStateDim[rho_][q_,r_,\[Alpha]_]:=Module[{hilbDim},
+hilbDim[M_]:=Dimensions[M][[1]];
+hilbDim[rho]^\[Alpha]*qPartitionFunc[rho,q]^r
+];
+
+
 qEulerChar[rho_,primsys_,dimprim_,q_]:=shiftedIndex[rho,primsys,dimprim,qPartitionFunc[#,q]&];
 
 
 qrEulerChar[rho_,primsys_,dimprim_,q_,r_]:=shiftedIndex[rho,primsys,dimprim,qPartitionFunc[#,q]^r&];
 
 
-stateIndex[rho_,primsys_,dimprim_,q_,r_,\[Alpha]_,w_]:=Module[{N,hilbDim},
-N=Length@primsys;
-hilbDim[M_]:=Dimensions[M][[1]];
-w^N*index[rho,primsys,dimprim, hilbDim[#]^\[Alpha]*qPartitionFunc[#,q]^r&]
-];
+stateIndex[rho_,primsys_,dimprim_,q_,r_,\[Alpha]_,w_]:=w^(Length@primsys)*index[rho,primsys,dimprim, finStateDim[#][q,r,\[Alpha]]&];
 
 
 (* ::Subsubsection:: *)
