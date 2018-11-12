@@ -195,6 +195,9 @@ eulerCharCom::usage="synonym for eulerCharE";
 tsallis::usage="tsallis[rho,q] calculates the (q-deformed) tsallis entropy of a density matrix rho.";
 
 
+renyi::usage="reny[rho,q] calculates the (q-deformed) renyi entropy of a density matrix rho.";
+
+
 qInteractionInfo::usage="qinteractionInfo[rho,primsys,dimprim][q] calculates the q-deformed interaction information
  of a density matrix rho defined on the primitive subsystems 'primsys' with dimension vectors 'dimprim'.  Here
 the q-deformed interaction information is defeind via the alternating sum Sum[(-1)^(|T|-1) S_(tsallis)(rho_T,q)]
@@ -478,46 +481,6 @@ sysPermute[tensor[rho,IdStateSparse[dimExtend]], currentPerm, dimCurrent] ]
 ];
 
 
-(* ::Subsection::Closed:: *)
-(* Adjoints under State-Operator Pairing*)
-
-
-stdMatrix[i_,j_,size_]:=SparseArray[{i,j}->1,size];
-
-
-mapofOpsToMat[map_]:=
-
-
-genAdjoint[M_,inprodsrc_,inprodtgt_]:= Module[{ipMatSrc, ipMatTgt},
-ipMatSrc=inprodToMat[inprodsrc,IdentityMatrix[Dimensions[M][[1]]]];
-ipMatTgt=inprodToMat[inprodtgt,IdentityMatrix[Dimensions[M][[2]]]];
-PseudoInverse[ipMatSrc].Transpose[M].ipMatTgt
-];
-
-
-stateMapToOperatorMap[statemap_]:=
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 (* ::Section:: *)
 (*Entropies and Related*)
 
@@ -548,7 +511,7 @@ vonNeumann[rho_]:=Tr[vNMatrixKernel@rho];
 interactionInfo[rho_,primsys_,dimprim_]:=shiftedIndex[rho,primsys,dimprim,vonNeumann];
 
 
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*Euler Characteristics of GNS and Commutant Complexes*)
 
 
@@ -570,7 +533,7 @@ eulerCharGNS:=eulerCharG;
 eulerCharCom:=eulerCharE;
 
 
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*q-deformed quantities*)
 
 
