@@ -174,15 +174,14 @@ interaction information is defined via the alternating sum Sum[(-1)^(N-|lambda|-
 eulerCharG::usage="eulerCharG[rho_,primsys_,dimprim_] computes the Euler characteristic of the GNS complex of a multipartite density state rho
 defined on the primitive subsystems 'primsys' with dimension vectosr 'dimprim'.";
 
-
-eulerCharGNS::usage="synonym for eulerCharG'.
+eulerCharGNS::usage="synonym for eulerCharG'.";
 
 
 eulerCharE::usage="eulerCharG[rho_,primsys_,dimprim_] computes the Euler characteristic of the commutant complex of a multipartite density state rho
 defined on the primitive subsystems 'primsys' with dimension vectosr 'dimprim'.";
 
 
-eulerCharCom::usage="synonym for eulerCharE'.
+eulerCharCom::usage="synonym for eulerCharE";
 
 
 (* ::Subsection:: *)
@@ -195,28 +194,27 @@ eulerCharCom::usage="synonym for eulerCharE'.
 
 tsallis::usage="tsallis[rho,q] calculates the (q-deformed) tsallis entropy of a density matrix rho.";
 
-qinteractionInfo::usage="qinteractionInfo[rho,primsys,dimprim] calculates the q-deformed interaction information
+qinteractionInfo::usage="qinteractionInfo[rho,primsys,dimprim][q] calculates the q-deformed interaction information
  of a density matrix rho defined on the primitive subsystems 'primsys' with dimension vectors 'dimprim'.  Here
-the q-deformed interaction information is defeind via the alternating sum Sum[(-1)^(N-|lambda|-1) S_(tsallis)(rho_lambda,q)]
-, where the sum runs over all subsets lambda of primitive subystems, N is the number of primitive subystems, and
- rho_lambda is the reduced density matrix on lambda.";
+the q-deformed interaction information is defeind via the alternating sum Sum[(-1)^(|T|-1) S_(tsallis)(rho_T,q)]
+, where the sum runs over all subsets lT of primitive subystems, and
+ rho_T is the reduced density matrix on lambda.";
 
 qPartitionFunc::usage="qPartitionFunc[rho,q] calculates Tr[rho^q]";
 
-qEulerChar::usage="qEulerChar[rho,primsys,dimprim][q] calculates the alternating sum Sum[(-1)^(N-|lambda|-1) Tr[rho^q],
- where the sum runs over all subsets lambda of primitive subystems, N is the number of primitive
- subystems, and rho_lambda is the reduced density matrix on lambda.  
-(q-1)*qEulerChar[rho,primsys,dimprim,q] is equal to qinteractionInfo[rho,primsys,dimprim,q].";
+qEulerChar::usage="qEulerChar[rho,primsys,dimprim][q] calculates the one parameter alternating sum Sum_{T}(-1)^(|T|-1) Tr[rho_{T}^q],
+ where the sum runs over all subsets T of primitive subystems,and rho_T is the reduced density matrix on lambda.
+qEulerChar[rho,primsys,dimprim,q]/(q-1) is equal to qinteractionInfo[rho,primsys,dimprim][q].";
 
 
-qrEulerChar::usage="qrEulerChar[rho,primsys,dimprim][q,r] calculates the two parameter alternating sum Sum_{lambda}(-1)^(N-|lambda|-1) Tr[rho^q]^r,
- where the sum runs over all subsets lambda of primitive subystems, N is the number of primitive
- subystems, and rho_lambda is the reduced density matrix on lambda.  The specialization at r=1 gives qEulerChar.";
+qrEulerChar::usage="qrEulerChar[rho,primsys,dimprim][q,r] calculates the two parameter alternating sum Sum_{T}(-1)^(|T|-1) Tr[rho_{T}^q]^r,
+ where the sum runs over all subsets T of primitive subystems,and rho_T is the reduced density matrix on lambda.  The specialization at r=1 gives qEulerChar.";
 
 
-stateIndex::usage="qrEulerChar[rho,primsys,dimprim][q,r] calculates the two parameter alternating sum Sum_{lambda}(-1)^(N-|lambda|-1) Tr[rho^q]^r,
- where the sum runs over all subsets lambda of primitive subystems, N is the number of primitive
- subystems, and rho_lambda is the reduced density matrix on lambda.  The specialization at r=1 gives qEulerChar.";
+stateIndex::usage="stateIndex[rho,primsys,dimprim][q,r,\[Alpha]] calculates the three parameter alternating sum 
+Sum_{T}(-1)^(|T|) dim(hilb_{T})^{\[Alpha]} Tr[rho_{T}^q]^r,
+ where the sum runs over all subsets T of primitive subystems, N is the number of primitive
+ subystems, and rho_T is the reduced density matrix on T.";
 
 
 (* ::Subsubsection:: *)
@@ -513,6 +511,10 @@ stateMapToOperatorMap[statemap_]:=
 
 
 
+
+
+
+
 (* ::Section:: *)
 (*Entropies and Related*)
 
@@ -537,7 +539,7 @@ vNKernel[lambda_]:=If[lambda==0,0,-lambda*Log[lambda]];
 
 vNMatrixKernel:=MatrixFunction[vNKernel,#]&;
 
-vonNeumann[rho_?PositiveSemidefiniteMatrixQ]:=Tr[vNMatrixKernel@rho];
+vonNeumann[rho_]:=Tr[vNMatrixKernel@rho];
 
 
 interactionInfo[rho_,primsys_,dimprim_]:=shiftedIndex[rho,primsys,dimprim,vonNeumann];
@@ -577,7 +579,7 @@ qLog[rho_?NumberQ,q_]:=If[q===1,Log[rho],
 1/(1-q)*(powerMod[1-q][rho]-1)
 ];
 
-qLog[rho_?PositiveSemidefiniteMatrixQ,q_]:=If[q===1,Log[rho],
+qLog[rho_,q_]:=If[q===1,Log[rho],
 (*else*)
 1/(1-q)*(matrixPowerMod[rho,1-q]-IdentityMatrix@Dimensions[rho])
 ];
@@ -587,7 +589,7 @@ qLog[rho_?PositiveSemidefiniteMatrixQ,q_]:=If[q===1,Log[rho],
 (*Tsallis Entropy, the q-deformed Interaction information, and related quantities*)
 
 
-tsallis[rho_?PositiveSemidefiniteMatrixQ, q_]:=If[q===1,vonNeumann[rho],
+tsallis[rho_, q_]:=If[q===1,vonNeumann[rho],
 (*else*)
 -Tr[rho.qLog[rho,q]]
 ];
