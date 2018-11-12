@@ -194,13 +194,16 @@ eulerCharCom::usage="synonym for eulerCharE";
 
 tsallis::usage="tsallis[rho,q] calculates the (q-deformed) tsallis entropy of a density matrix rho.";
 
-qinteractionInfo::usage="qinteractionInfo[rho,primsys,dimprim][q] calculates the q-deformed interaction information
+
+qInteractionInfo::usage="qinteractionInfo[rho,primsys,dimprim][q] calculates the q-deformed interaction information
  of a density matrix rho defined on the primitive subsystems 'primsys' with dimension vectors 'dimprim'.  Here
 the q-deformed interaction information is defeind via the alternating sum Sum[(-1)^(|T|-1) S_(tsallis)(rho_T,q)]
 , where the sum runs over all subsets lT of primitive subystems, and
  rho_T is the reduced density matrix on lambda.";
 
+
 qPartitionFunc::usage="qPartitionFunc[rho,q] calculates Tr[rho^q]";
+
 
 qEulerChar::usage="qEulerChar[rho,primsys,dimprim][q] calculates the one parameter alternating sum Sum_{T}(-1)^(|T|-1) Tr[rho_{T}^q],
  where the sum runs over all subsets T of primitive subystems,and rho_T is the reduced density matrix on lambda.
@@ -211,8 +214,8 @@ qrEulerChar::usage="qrEulerChar[rho,primsys,dimprim][q,r] calculates the two par
  where the sum runs over all subsets T of primitive subystems,and rho_T is the reduced density matrix on lambda.  The specialization at r=1 gives qEulerChar.";
 
 
-stateIndex::usage="stateIndex[rho,primsys,dimprim][q,r,\[Alpha]] calculates the three parameter alternating sum 
-Sum_{T}(-1)^(|T|) dim(hilb_{T})^{\[Alpha]} Tr[rho_{T}^q]^r,
+stateIndex::usage="stateIndex[rho,primsys,dimprim][\[Alpha]_,q_,r_,w_] calculates the three parameter alternating sum 
+w^(|P|)*Sum_{T}(-1)^(|T|) dim(hilb_{T})^{\[Alpha]} Tr[rho_{T}^q]^r,
  where the sum runs over all subsets T of primitive subystems, N is the number of primitive
  subystems, and rho_T is the reduced density matrix on T.";
 
@@ -524,7 +527,7 @@ stateMapToOperatorMap[statemap_]:=
 
 
 index[rho_,primsys_,dimprim_,fun_]:=Module[{N=Length@primsys},
-Total@Map[(-1)^Length@#*fun@reducedDensityMat[rho,#,dimprim]&,Subsets[primsys]]
+Total@Map[(-1)^(Length@#)*fun@reducedDensityMat[rho,#,dimprim]&,Subsets[primsys]]
 ];
 
 
