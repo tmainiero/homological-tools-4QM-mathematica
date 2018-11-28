@@ -28,7 +28,7 @@ Id::usage="Id[n] is a synonym for IdentityMatrix[n].";
 IdSparse::usage="IdSparse[n] generates an n x n identity matrix as a sparse array.";
 
 
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*Sugar*)
 
 
@@ -154,11 +154,12 @@ Tr_systr[rho*op] given the dimension vector 'dimfull'.";
 (*Entropies and Related*)
 
 
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*von Neumann Entropy and Interaction Information*)
 
 
 vonNeumann::usage="vonNeumann[rho] calculates the von Neumann entropy of a density matrix rho.";
+
 
 interactionInfo::usage="interactionInfo[rho,primsys,dimprim] calculates the interaction information of a
 density matrix rho defined on the primitive subsystems 'primsys' with dimension vectors 'dimprim'.  Here
@@ -167,7 +168,7 @@ interaction information is defined via the alternating sum Sum[(-1)^(N-|lambda|-
  rho_lambda is the reduced density matrix on lambda.";
 
 
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*Euler Characteristics of GNS and Commutant Complexes*)
 
 
@@ -184,7 +185,7 @@ defined on the primitive subsystems 'primsys' with dimension vectosr 'dimprim'."
 eulerCharCom::usage="synonym for eulerCharE";
 
 
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*q-deformed quantities*)
 
 
@@ -405,7 +406,7 @@ extendOpSparse[op,sysop,sysfull,dim]
 ];
 
 
-(* ::Section:: *)
+(* ::Section::Closed:: *)
 (*Supplementary Operations*)
 
 
@@ -485,7 +486,7 @@ sysPermute[tensor[rho,IdStateSparse[dimExtend]], currentPerm, dimCurrent] ]
 (*Entropies and Related*)
 
 
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*Inclusion-Exclusion Sum/Alternating Sum of Evaluations on Reduced Density Matrices*)
 
 
@@ -497,7 +498,7 @@ Total@Map[(-1)^(Length@#)*fun@reducedDensityMat[rho,#,dimprim]&,Subsets[primsys]
 shiftedIndex[rho_,primsys_,dimprim_,fun_]:=(-1)*index[rho,primsys,dimprim,fun];
 
 
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*von Neumann Entropy and Interaction Information*)
 
 
