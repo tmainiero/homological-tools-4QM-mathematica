@@ -138,7 +138,7 @@ operator matrix on the second subsystem (of dimension 3); then partial cotrace r
 of the dimensions in 'dim'.  This function refers directly to extendOp.";
 
 
-(* ::Section::Closed:: *)
+(* ::Section:: *)
 (*Supplementary Operations*)
 
 
@@ -172,17 +172,15 @@ interaction information is defined via the alternating sum Sum[(-1)^(N-|lambda|-
 
 
 eulerCharG::usage="eulerCharG[rho_,primsys_,dimprim_] computes the Euler characteristic of the GNS complex of a multipartite density state rho
-defined on the primitive subsystems 'primsys' with dimension vectosr 'dimprim'.";
+defined on the primitive subsystems 'primsys' with dimension vector 'dimprim'.";
 
-
-eulerCharGNS::usage="synonym for eulerCharG'.
+eulerCharGNS::usage="Synonym for eulerCharG.";
 
 
 eulerCharE::usage="eulerCharG[rho_,primsys_,dimprim_] computes the Euler characteristic of the commutant complex of a multipartite density state rho
-defined on the primitive subsystems 'primsys' with dimension vectosr 'dimprim'.";
+defined on the primitive subsystems 'primsys' with dimension vector 'dimprim.'";
 
-
-eulerCharCom::usage="synonym for eulerCharE'.
+eulerCharCom::usage="synonym for eulerCharE.";
 
 
 (* ::Subsection:: *)
@@ -495,6 +493,8 @@ PseudoInverse[ipMatSrc].Transpose[M].ipMatTgt
 
 
 stateMapToOperatorMap[statemap_]:=
+
+
 
 
 
