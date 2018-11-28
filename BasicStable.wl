@@ -176,7 +176,6 @@ defined on the primitive subsystems 'primsys' with dimension vector 'dimprim'.";
 
 eulerCharGNS::usage="Synonym for eulerCharG.";
 
-
 eulerCharE::usage="eulerCharG[rho_,primsys_,dimprim_] computes the Euler characteristic of the commutant complex of a multipartite density state rho
 defined on the primitive subsystems 'primsys' with dimension vector 'dimprim.'";
 
@@ -193,28 +192,33 @@ eulerCharCom::usage="synonym for eulerCharE.";
 
 tsallis::usage="tsallis[rho,q] calculates the (q-deformed) tsallis entropy of a density matrix rho.";
 
-qinteractionInfo::usage="qinteractionInfo[rho,primsys,dimprim] calculates the q-deformed interaction information
+
+renyi::usage="reny[rho,q] calculates the (q-deformed) renyi entropy of a density matrix rho.";
+
+
+qInteractionInfo::usage="qinteractionInfo[rho,primsys,dimprim][q] calculates the q-deformed interaction information
  of a density matrix rho defined on the primitive subsystems 'primsys' with dimension vectors 'dimprim'.  Here
-the q-deformed interaction information is defeind via the alternating sum Sum[(-1)^(N-|lambda|-1) S_(tsallis)(rho_lambda,q)]
-, where the sum runs over all subsets lambda of primitive subystems, N is the number of primitive subystems, and
- rho_lambda is the reduced density matrix on lambda.";
+the q-deformed interaction information is defeind via the alternating sum Sum[(-1)^(|T|-1) S_(tsallis)(rho_T,q)]
+, where the sum runs over all subsets lT of primitive subystems, and
+ rho_T is the reduced density matrix on lambda.";
+
 
 qPartitionFunc::usage="qPartitionFunc[rho,q] calculates Tr[rho^q]";
 
-qEulerChar::usage="qEulerChar[rho,primsys,dimprim][q] calculates the alternating sum Sum[(-1)^(N-|lambda|-1) Tr[rho^q],
- where the sum runs over all subsets lambda of primitive subystems, N is the number of primitive
- subystems, and rho_lambda is the reduced density matrix on lambda.  
-(q-1)*qEulerChar[rho,primsys,dimprim,q] is equal to qinteractionInfo[rho,primsys,dimprim,q].";
+
+qEulerChar::usage="qEulerChar[rho,primsys,dimprim][q] calculates the one parameter alternating sum Sum_{T}(-1)^(|T|-1) Tr[rho_{T}^q],
+ where the sum runs over all subsets T of primitive subystems,and rho_T is the reduced density matrix on lambda.
+qEulerChar[rho,primsys,dimprim,q]/(q-1) is equal to qinteractionInfo[rho,primsys,dimprim][q].";
 
 
-qrEulerChar::usage="qrEulerChar[rho,primsys,dimprim][q,r] calculates the two parameter alternating sum Sum_{lambda}(-1)^(N-|lambda|-1) Tr[rho^q]^r,
- where the sum runs over all subsets lambda of primitive subystems, N is the number of primitive
- subystems, and rho_lambda is the reduced density matrix on lambda.  The specialization at r=1 gives qEulerChar.";
+qrEulerChar::usage="qrEulerChar[rho,primsys,dimprim][q,r] calculates the two parameter alternating sum Sum_{T}(-1)^(|T|-1) Tr[rho_{T}^q]^r,
+ where the sum runs over all subsets T of primitive subystems,and rho_T is the reduced density matrix on lambda.  The specialization at r=1 gives qEulerChar.";
 
 
-stateIndex::usage="qrEulerChar[rho,primsys,dimprim][q,r] calculates the two parameter alternating sum Sum_{lambda}(-1)^(N-|lambda|-1) Tr[rho^q]^r,
- where the sum runs over all subsets lambda of primitive subystems, N is the number of primitive
- subystems, and rho_lambda is the reduced density matrix on lambda.  The specialization at r=1 gives qEulerChar.";
+stateIndex::usage="stateIndex[rho,primsys,dimprim][\[Alpha]_,q_,r_,w_] calculates the three parameter alternating sum 
+w^(|P|)*Sum_{T}(-1)^(|T|) dim(hilb_{T})^{\[Alpha]} Tr[rho_{T}^q]^r,
+ where the sum runs over all subsets T of primitive subystems, N is the number of primitive
+ subystems, and rho_T is the reduced density matrix on T.";
 
 
 (* ::Subsubsection:: *)
@@ -475,44 +479,6 @@ sysPermute[tensor[rho,IdStateSparse[dimExtend]], currentPerm, dimCurrent] ]
 ];
 
 
-(* ::Subsection::Closed:: *)
-(* Adjoints under State-Operator Pairing*)
-
-
-stdMatrix[i_,j_,size_]:=SparseArray[{i,j}->1,size];
-
-
-mapofOpsToMat[map_]:=
-
-
-genAdjoint[M_,inprodsrc_,inprodtgt_]:= Module[{ipMatSrc, ipMatTgt},
-ipMatSrc=inprodToMat[inprodsrc,IdentityMatrix[Dimensions[M][[1]]]];
-ipMatTgt=inprodToMat[inprodtgt,IdentityMatrix[Dimensions[M][[2]]]];
-PseudoInverse[ipMatSrc].Transpose[M].ipMatTgt
-];
-
-
-stateMapToOperatorMap[statemap_]:=
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 (* ::Section:: *)
 (*Entropies and Related*)
 
@@ -522,7 +488,7 @@ stateMapToOperatorMap[statemap_]:=
 
 
 index[rho_,primsys_,dimprim_,fun_]:=Module[{N=Length@primsys},
-Total@Map[(-1)^Length@#*fun@reducedDensityMat[rho,#,dimprim]&,Subsets[primsys]]
+Total@Map[(-1)^(Length@#)*fun@reducedDensityMat[rho,#,dimprim]&,Subsets[primsys]]
 ];
 
 
@@ -537,13 +503,13 @@ vNKernel[lambda_]:=If[lambda==0,0,-lambda*Log[lambda]];
 
 vNMatrixKernel:=MatrixFunction[vNKernel,#]&;
 
-vonNeumann[rho_?PositiveSemidefiniteMatrixQ]:=Tr[vNMatrixKernel@rho];
+vonNeumann[rho_]:=Tr[vNMatrixKernel@rho];
 
 
 interactionInfo[rho_,primsys_,dimprim_]:=shiftedIndex[rho,primsys,dimprim,vonNeumann];
 
 
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*Euler Characteristics of GNS and Commutant Complexes*)
 
 
@@ -565,7 +531,7 @@ eulerCharGNS:=eulerCharG;
 eulerCharCom:=eulerCharE;
 
 
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*q-deformed quantities*)
 
 
@@ -577,7 +543,7 @@ qLog[rho_?NumberQ,q_]:=If[q===1,Log[rho],
 1/(1-q)*(powerMod[1-q][rho]-1)
 ];
 
-qLog[rho_?PositiveSemidefiniteMatrixQ,q_]:=If[q===1,Log[rho],
+qLog[rho_,q_]:=If[q===1,Log[rho],
 (*else*)
 1/(1-q)*(matrixPowerMod[rho,1-q]-IdentityMatrix@Dimensions[rho])
 ];
@@ -587,7 +553,7 @@ qLog[rho_?PositiveSemidefiniteMatrixQ,q_]:=If[q===1,Log[rho],
 (*Tsallis Entropy, the q-deformed Interaction information, and related quantities*)
 
 
-tsallis[rho_?PositiveSemidefiniteMatrixQ, q_]:=If[q===1,vonNeumann[rho],
+tsallis[rho_, q_]:=If[q===1,vonNeumann[rho],
 (*else*)
 -Tr[rho.qLog[rho,q]]
 ];
