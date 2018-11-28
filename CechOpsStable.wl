@@ -14,6 +14,8 @@ BeginPackage["CechOpsStable`"];
 partitionToCover::usage="partitionToCover[part] Takes in a collection of disjoint subsets part={lambda_1,...lambda_n}, where lambda_1 are sets themselves
 denoted by lists, (a partition of X = Union[{lambda_1,...lambda_n}]) and outputs the associated 'complementary' cover {X-lambda_1,...X-lambda_n}.";
 
+complementaryCover::usage="complementaryCover[n] takes in an integer n and outputs the cover of the set {1,...,n} given by taking complements of each element.";
+
 numPrim::usage="Takes in a cover {U_1, ... U_n} and outputs the length n: the number of 'primitive' elements of the cover.";
 
 indexToSimplex::usage="indexToSimplex[simpnum,deg,cover] takes in an index I=simpnum and outputs the I^th simplex of the cover (according to lexicographical ordering).";
@@ -31,7 +33,7 @@ simpList::usage="simpList[deg,cover] outputs a list of the simplices of degree '
 simpSuppList::usage="simpSuppList[deg,cover] outputs a list of the supports of simplices of degree deg with respect to the cover.";
 
 
-(* ::Section::Closed:: *)
+(* ::Section:: *)
 (*Face and Alternating Boundary Operator*)
 
 
@@ -68,7 +70,7 @@ funMorMat::usage="funMorMat[funObj_,funMor_,inprod_] is application of morToMat 
 outputs the matrix associated to funMor[src,tgt].";
 
 
-(* ::Section::Closed:: *)
+(* ::Section:: *)
 (*Face and Alternating Boundary Matrices*)
 
 
@@ -95,7 +97,7 @@ see the function 'faceMatSlow'.";
 faceMatSparse::usage="";
 
 
-(* ::Section::Closed:: *)
+(* ::Section:: *)
 (*Semi-Simplicial Alternating Complex Homology*)
 
 
@@ -175,11 +177,14 @@ vectSpIntMult[vspaceList_]:=Fold[vectSpInt,vspaceList];
 splitFast[list_,parts_]:=Block[{accumulation=FoldList[Plus,0,parts]},Inner[Take[list,{#1,#2}]&,Drop[accumulation,-1]+1,Rest[accumulation],List]];
 
 
-(* ::Section::Closed:: *)
+(* ::Section:: *)
 (*Cech Nerve Operations and Indexing*)
 
 
 partitionToCover[part_]:=Map[Complement[Union@@part,#]&,part];
+
+
+complementaryCover[n_]:=partitionToCover[Table[{i},{i,1,n}]];
 
 
 numPrim[cover_]:=Length[cover];
@@ -209,7 +214,7 @@ simpSuppList[deg_,cover_]:= Map[support[#,cover]&, simpList[deg,cover]];
 simpMapToList[map_,deg_,cover_]:=Map[map@support[#,cover]&, simpList[deg,cover]];
 
 
-(* ::Section::Closed:: *)
+(* ::Section:: *)
 (*Face and Alternating Boundary Operator*)
 
 
@@ -254,18 +259,18 @@ Transpose@Map[morVect, stdBasis[dimVectSrc]]
 funMorMat[funObj_,funMor_,inprod_]:=morToMat[#1,#2,funMor[#1,#2],funObj,inprod]&;
 
 
-(* ::Section::Closed:: *)
+(* ::Section:: *)
 (*Face Maps as Matrices*)
 
 
-(* ::Subsection::Closed:: *)
+(* ::Subsection:: *)
 (*Ranks of Simplicial Objects/Alternating Complex Components*)
 
 
 rkChain[deg_,funObj_,cover_]:=If[deg<-1,0,Total@simpMapToList[Length@*funObj,deg,cover]];
 
 
-(* ::Subsection::Closed:: *)
+(* ::Subsection:: *)
 (*Elegant Implementation of Face Map Matrix*)
 
 

@@ -10,40 +10,48 @@ BeginPackage["StateHomologyStable`",{"StateFunctorStable`","CechOpsStable`","Bas
 (*Descriptions of Public (Unhidden) Functions*)
 
 
-comHomologyRk::usage="comHomologyRk[deg,rho,dimprim,cover] outputs the rank of the degree 'deg'
-homology group associated to the state rho";
+comCohomologyRk::usage="comHomologyRk[deg,rho,dimprim,cover] outputs the rank of the degree 'deg'
+cohomology group associated to the state rho";
 
 
-GNSHomologyRk::usage="GNSHomologyRk[deg,rho,dimprim,cover] outputs the rank of the degree 'deg'
-homology group associated to the state rho";
+GNSCohomologyRk::usage="GNSHomologyRk[deg,rho,dimprim,cover] outputs the rank of the degree 'deg'
+cohomology group associated to the state rho";
 
 
-comHomologyVect::usage="comHomologyVect[deg,rho,dimprim,cover] outputs a list of generators of 
-the degree 'deg' homology group---identified with a vector space---associated to the state rho";
+comCohomologyVect::usage="comHomologyVect[deg,rho,dimprim,cover] outputs a list of generators of 
+the degree 'deg' cohomology group---identified with a vector space---associated to the state rho";
 
 
-GNSHomologyVect::usage="GNSHomologyVect[deg,rho,dimprim,cover] outputs a list of generators of 
-the degree 'deg' homology group---identified with a vector space---associated to the state rho";
+GNSCohomologyVect::usage="GNSHomologyVect[deg,rho,dimprim,cover] outputs a list of generators of 
+the degree 'deg' hcohomology group---identified with a vector space---associated to the state rho";
 
 
-comHomologyObj::usage="comHomologyObj[deg,rho,dimprim,cover] outputs a lists of generators of the degree
-'deg' homology group---given by chains valued in elements of endFunctorObj---associated to the state rho.";
+comCohomologyObj::usage="comHomologyObj[deg,rho,dimprim,cover] outputs a lists of generators of the degree
+'deg' cohomology group---given by chains valued in elements of endFunctorObj---associated to the state rho.";
 
 
-GNSHomologyObj::usage="GNSHomologyObj[deg,rho,dimprim,cover] outputs a lists of generators of the degree
-'deg' homology group---given by chains valued in elements of GNSFunctorObj---associated to the state rho.";
+GNSCohomologyObj::usage="GNSHomologyObj[deg,rho,dimprim,cover] outputs a lists of generators of the degree
+'deg' cohomology group---given by chains valued in elements of GNSFunctorObj---associated to the state rho.";
 
 
-comHomologyRkList::usage="comHomologyRkList[rho_,dimprim_,cover_] outputs a list of the ranks
+comCohomologyRkList::usage="comHomologyRkList[rho_,dimprim_,cover_] outputs a list of the ranks
 of the homology groups (associated to the state rho) from degree -1 to degree Length[cover]-1.  This 
-function is faster than sequentially using stateHomologyRk as it temporarily stores values
+function is faster than sequentially using comCohomologyRk as it temporarily stores values
 from endFunctorObj and endFunctorMor.";
 
 
-GNSHomologyRkList::usage="GNSHomologyRkList[rho_,dimprim_,cover_] outputs a list of the ranks
+GNSCohomologyRkList::usage="GNSHomologyRkList[rho_,dimprim_,cover_] outputs a list of the ranks
 of the homology groups (associated to the state rho) from degree -1 to degree Length[cover]-1.  This 
-function is faster than sequentially using stateHomologyRk as it temporarily stores values
+function is faster than sequentially using GNSCohomologyRk as it temporarily stores values
 from GNSFunctorObj and GNSFunctorMor.";
+
+
+comPoly::usage="comPoly[rho_,dimprim_,cover_][y] outputs the commutant Poincare polynomial, in variable y, of the multipartite density state
+specified by the data of the density state 'rho', list of dimension vectors 'dimprim', and cover of tensor factors 'cover'.";
+
+
+GNSPoly::usage="comPoly[rho_,dimprim_,cover_][y] outputs the GNS Poincare polynomial, in variable y, of the multipartite density state
+specified by the data of the density state 'rho', list of dimension vectors 'dimprim', and cover of tensor factors 'cover'.";
 
 
 (* ::Title:: *)
@@ -78,14 +86,14 @@ GNSHomologyObj[rho_,dimprim_,cover_][deg_]:=homologyObj[deg, GNSFunctorObj[rho,d
 comHomologyRkList[rho_,dimprim_,cover_]:=Module[{funMor,funObj},
 funObj[srcobj_]:=funObj[srcobj]=endFunctorObj[rho,dimprim][srcobj];
 funMor[src_,tgt_]:=funMor[src,tgt]=endFunctorMor[rho,dimprim][src,tgt];
-Table[homologyRank[deg, funObj, funMor, cover, localInProd],{deg,-1,Length@cover-1}]
+Table[homologyRank[deg, funObj, funMor, cover, localInProd],{deg,-1,Length@cover-2}]
 ];
 
 
 GNSHomologyRkList[rho_,dimprim_,cover_]:=Module[{funMor,funObj},
 funObj[srcobj_]:=funObj[srcobj]=GNSFunctorObj[rho,dimprim][srcobj];
 funMor[src_,tgt_]:=funMor[src,tgt]=GNSFunctorMor[rho,dimprim][src,tgt];
-Table[homologyRank[deg, funObj, funMor, cover, localInProd],{deg,-1,Length@cover-1}]
+Table[homologyRank[deg, funObj, funMor, cover, localInProd],{deg,-1,Length@cover-2}]
 ];
 
 
@@ -93,35 +101,37 @@ Table[homologyRank[deg, funObj, funMor, cover, localInProd],{deg,-1,Length@cover
 (*Cohomologically Graded*)
 
 
-fixDegree[deg_,cover_]:=Length@cover-deg-1;
+fixDegree[deg_,cover_]:=Length@cover-deg-2;
 
 
-comCohomologyRk[rho_,dimprim_,cover_][deg_]:=comHomologyRk[rho,dimprim,cover]@fixDegree;
+comCohomologyRk[rho_,dimprim_,cover_][deg_]:=comHomologyRk[rho,dimprim,cover][fixDegree[deg,cover]];
 
 
-GNSCohomologyRk[rho_,dimprim_,cover_][deg_]:=GNSHomologyRk[rho,dimprim,cover]@fixDegree;
+GNSCohomologyRk[rho_,dimprim_,cover_][deg_]:=GNSHomologyRk[rho,dimprim,cover][fixDegree[deg,cover]];
 
 
-comCohomologyVect[rho_,dimprim_,cover_][deg_]:=comHomologyVect[rho,dimprim,cover]@fixDegree;
+comCohomologyVect[rho_,dimprim_,cover_][deg_]:=comHomologyVect[rho,dimprim,cover][fixDegree[deg,cover]];
 
 
-GNSCohomologyVect[rho_,dimprim_,cover_][deg_]:=comHomologyVect[rho,dimprim,cover]@fixDegree;
+GNSCohomologyVect[rho_,dimprim_,cover_][deg_]:=comHomologyVect[rho,dimprim,cover][fixDegree[deg,cover]];
 
 
-comCohomologyObj[rho_,dimprim_,cover_][deg_]:=comCohomologyObj[rho,dimprim,cover]@fixDegree;
+comCohomologyObj[rho_,dimprim_,cover_][deg_]:=comCohomologyObj[rho,dimprim,cover][fixDegree[deg,cover]];
 
 
-GNSCohomologyObj[rho_,dimprim_,cover_][deg_]:=comCohomologyObj[rho,dimprim,cover]@fixDegree;
+GNSCohomologyObj[rho_,dimprim_,cover_][deg_]:=comCohomologyObj[rho,dimprim,cover][fixDegree[deg,cover]];
 
 
-comCohomologyRkList[rho_,dimprim_,cover_]:=Module[{funMor,funObj},
-funObj[srcobj_]:=funObj[srcobj]=endFunctorObj[rho,dimprim][srcobj];
-funMor[src_,tgt_]:=funMor[src,tgt]=endFunctorMor[rho,dimprim][src,tgt];
-Table[homologyRank[deg, funObj, funMor, cover, localInProd],{deg,-1,Length@cover-1}]
-];
+comCohomologyRkList:=Reverse@*comHomologyRkList;
 
 
-GNSCohomologyRkList[rho_,dimprim_,cover_]:=Reverse@*GNSHomologyRkList;
+GNSCohomologyRkList:=Reverse@*GNSHomologyRkList;
+
+
+comPoly[rho_,dimprim_,cover_][y_]:=y^(Range[0,Length@cover-1]).comCohomologyRkList[rho,dimprim,cover];
+
+
+GNSPoly[rho_,dimprim_,cover_][y_]:=y^(Range[0,Length@cover-1]).GNSCohomologyRkList[rho,dimprim,cover];
 
 
 (* ::Title:: *)
