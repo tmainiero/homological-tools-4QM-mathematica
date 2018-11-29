@@ -58,7 +58,7 @@ specified by the data of the density state 'rho', list of dimension vectors 'dim
 (*Function Definitions*)
 
 
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*Homologically Graded*)
 
 
@@ -97,8 +97,12 @@ Table[homologyRank[deg, funObj, funMor, cover, localInProd],{deg,-1,Length@cover
 ];
 
 
-(* ::Subsection:: *)
-(*Cohomologically Graded*)
+(* ::Subsection::Closed:: *)
+(*Cohomologically Graded Wrappers*)
+
+
+(**Because this package was originally built to compute cech homology of a pre-cosheaf, 
+the functions here are mere wrappers to correct back to cohomological grading**)
 
 
 fixDegree[deg_,cover_]:=Length@cover-deg-2;
@@ -113,13 +117,17 @@ GNSCohomologyRk[rho_,dimprim_,cover_][deg_]:=GNSHomologyRk[rho,dimprim,cover][fi
 comCohomologyVect[rho_,dimprim_,cover_][deg_]:=comHomologyVect[rho,dimprim,cover][fixDegree[deg,cover]];
 
 
-GNSCohomologyVect[rho_,dimprim_,cover_][deg_]:=comHomologyVect[rho,dimprim,cover][fixDegree[deg,cover]];
+GNSCohomologyVect[rho_,dimprim_,cover_][deg_]:=GNSHomologyVect[rho,dimprim,cover][fixDegree[deg,cover]];
 
 
-comCohomologyObj[rho_,dimprim_,cover_][deg_]:=comCohomologyObj[rho,dimprim,cover][fixDegree[deg,cover]];
+comCohomologyObj[rho_,dimprim_,cover_][deg_]:=Module[{fixSimplex,cochainList},
+fixSimplex=Complement[Range[Length@cover],#]&;
+cochainList=comHomologyObj[rho,dimprim,cover][fixDegree[deg,cover]];
+Map[#@*fixSimplex&,cochainList]
+];
 
 
-GNSCohomologyObj[rho_,dimprim_,cover_][deg_]:=comCohomologyObj[rho,dimprim,cover][fixDegree[deg,cover]];
+GNSCohomologyObj[rho_,dimprim_,cover_][deg_]:=GNSHomologyObj[rho,dimprim,cover][fixDegree[deg,cover]];
 
 
 comCohomologyRkList:=Reverse@*comHomologyRkList;
