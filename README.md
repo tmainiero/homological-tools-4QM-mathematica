@@ -16,13 +16,7 @@ Most functions are documented.  The package `BasicStable.wl` provides useful qua
 
 ### Git
 
-#### For just the Mathematica Software
-
-`git clone https://github.com/tmainiero/homological_toolbox_software/tree/master/Mathematica.git`
-
-#### For both the Mathematica and Octave Software:
-
-`git clone https://github.com/tmainiero/homological_toolbox_software.git`
+`git clone https://github.com/tmainiero/homological-tools-4QM-mathematica`
 
 ### File by File
 
