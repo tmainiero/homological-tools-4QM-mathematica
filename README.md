@@ -16,7 +16,7 @@ Most functions are documented.  The package `BasicStable.wl` provides useful qua
 
 ### Git
 
-`git clone https://github.com/tmainiero/homological-tools-4QM-mathematica`
+`git clone https://github.com/tmainiero/homological-tools-4QM-mathematica.git`
 
 ### File by File
 
