@@ -97,7 +97,7 @@ Table[homologyRank[deg, funObj, funMor, cover, localInProd],{deg,-1,Length@cover
 ];
 
 
-(* ::Subsection::Closed:: *)
+(* ::Subsection:: *)
 (*Cohomologically Graded Wrappers*)
 
 
@@ -110,14 +110,22 @@ fixDegree[deg_,cover_]:=Length@cover-deg-2;
 
 comCohomologyRk[rho_,dimprim_,cover_][deg_]:=comHomologyRk[rho,dimprim,cover][fixDegree[deg,cover]];
 
+comCohomologyRk[rho_,dimprim_][deg_]:=comCohomologyRk[rho,dimprim,complementaryCover[Length@dimprim]];
+
 
 GNSCohomologyRk[rho_,dimprim_,cover_][deg_]:=GNSHomologyRk[rho,dimprim,cover][fixDegree[deg,cover]];
+
+GNSCohomologyRk[rho_,dimprim_][deg_]:=GNSCohomologyRk[rho,dimprim,complementaryCover[Length@dimprim]];
 
 
 comCohomologyVect[rho_,dimprim_,cover_][deg_]:=comHomologyVect[rho,dimprim,cover][fixDegree[deg,cover]];
 
+comCohomologyVect[rho_,dimprim_][deg_]:=comCohomologyVect[rho,dimprim,complementaryCover[Length@dimprim]];
+
 
 GNSCohomologyVect[rho_,dimprim_,cover_][deg_]:=GNSHomologyVect[rho,dimprim,cover][fixDegree[deg,cover]];
+
+GNSCohomologyVect[rho_,dimprim_][deg_]:=GNSCohomologyVect[rho,dimprim,complementaryCover[Length@dimprim]];
 
 
 comCohomologyObj[rho_,dimprim_,cover_][deg_]:=Module[{fixSimplex,cochainList},
@@ -130,16 +138,24 @@ Map[#@*fixSimplex&,cochainList]
 GNSCohomologyObj[rho_,dimprim_,cover_][deg_]:=GNSHomologyObj[rho,dimprim,cover][fixDegree[deg,cover]];
 
 
-comCohomologyRkList:=Reverse@*comHomologyRkList;
+comCohomologyRkList[rho_,dimprim_,cover_]:=Reverse@comHomologyRkList[rho,dimprim,cover];
+
+comCohomologyRkList[rho_,dimprim_]:=Reverse@comHomologyRkList[rho,dimprim,complementaryCover[Length@dimprim]];
 
 
-GNSCohomologyRkList:=Reverse@*GNSHomologyRkList;
+GNSCohomologyRkList[rho_,dimprim_,cover_]:=Reverse@GNSHomologyRkList[rho,dimprim,cover];
+
+GNSCohomologyRkList[rho_,dimprim_]:=Reverse@GNSHomologyRkList[rho,dimprim,complementaryCover[Length@dimprim]];
 
 
-comPoly[rho_,dimprim_,cover_][y_]:=y^(Range[0,Length@cover-1]).comCohomologyRkList[rho,dimprim,cover];
+comPoly[rho_,dimprim_,cover_][y_]:=y^(Range[0,Length@dimprim-1]).comCohomologyRkList[rho,dimprim,cover];
+
+comPoly[rho_,dimprim_]:=comPoly[rho,dimprim,complementaryCover[Length@dimprim]];
 
 
-GNSPoly[rho_,dimprim_,cover_][y_]:=y^(Range[0,Length@cover-1]).GNSCohomologyRkList[rho,dimprim,cover];
+GNSPoly[rho_,dimprim_,cover_][y_]:=y^(Range[0,Length@dimprim-1]).GNSCohomologyRkList[rho,dimprim,cover];
+
+GNSPoly[rho_,dimprim_]:=GNSPoly[rho,dimprim,complementaryCover[Length@dimprim]];
 
 
 (* ::Title:: *)
@@ -150,6 +166,3 @@ End[];
 
 
 EndPackage[]
-
-
-
