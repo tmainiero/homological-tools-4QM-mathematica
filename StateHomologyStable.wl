@@ -131,6 +131,15 @@ Reverse@(func@@multiData)
 ];
 
 
+cohomologicalGradingObj[func_][multiState__][deg_]:=Module[{multiData,cover,coSimplex,cochainGeneratorList},
+multiData=multipartiteData[multiState];
+cover=multiData[[3]];
+coSimplex=Complement[Range[Length@cover],#]&;
+cochainGeneratorList=(func@@multiData)[fixDegree[deg,cover]];
+Map[#@*coSimplex&,cochainGeneratorList]
+];
+
+
 comCohomologyRk:=cohomologicalGrading[comHomologyRk];
 
 
@@ -143,7 +152,10 @@ comCohomologyVect:=cohomologicalGrading[comHomologyVect];
 GNSCohomologyVect:=cohomologicalGrading[GNSHomologyVect];
 
 
-comCohomologyObj:=cohomologicalGrading[GNSHomologyObj];
+comCohomologyObj:=cohomologicalGradingObj[comHomologyObj];
+
+
+GNSCohomologyObj:=cohomologicalGradingObj[comHomologyObj];
 
 
 (* comCohomologyObj[rho_,dimprim_,cover_][deg_]:=Module[{fixSimplex,cochainList},
@@ -153,7 +165,7 @@ Map[#@*fixSimplex&,cochainList]
 ]; *)
 
 
-GNSCohomologyObj[rho_,dimprim_,cover_][deg_]:=GNSHomologyObj[rho,dimprim,cover][fixDegree[deg,cover]];
+(* GNSCohomologyObj[rho_,dimprim_,cover_][deg_]:=GNSHomologyObj[rho,dimprim,cover][fixDegree[deg,cover]]; *)
 
 
 comCohomologyRkList:=cohomologicalGradingList[comHomologyRkList];
