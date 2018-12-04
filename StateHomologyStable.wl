@@ -108,54 +108,67 @@ the functions here are mere wrappers to correct back to cohomological grading**)
 fixDegree[deg_,cover_]:=Length@cover-deg-2;
 
 
-comCohomologyRk[rho_,dimprim_,cover_][deg_]:=comHomologyRk[rho,dimprim,cover][fixDegree[deg,cover]];
+multipartiteData[rho_,dimprim_?ListQ,cover_?ListQ]:={rho,dimprim,cover};
 
-comCohomologyRk[rho_,dimprim_][deg_]:=comCohomologyRk[rho,dimprim,complementaryCover[Length@dimprim]];
+multipartiteData[rho_,dimprim_?ListQ]:={rho,dimprim,complementaryCover[Length@dimprim]};
 
+multipartiteData[rho_,numSys_?IntegerQ,d_?IntegerQ]:={rho,ConstantArray[d,numSys],complementaryCover[numSys]};
 
-GNSCohomologyRk[rho_,dimprim_,cover_][deg_]:=GNSHomologyRk[rho,dimprim,cover][fixDegree[deg,cover]];
-
-GNSCohomologyRk[rho_,dimprim_][deg_]:=GNSCohomologyRk[rho,dimprim,complementaryCover[Length@dimprim]];
-
-
-comCohomologyVect[rho_,dimprim_,cover_][deg_]:=comHomologyVect[rho,dimprim,cover][fixDegree[deg,cover]];
-
-comCohomologyVect[rho_,dimprim_][deg_]:=comCohomologyVect[rho,dimprim,complementaryCover[Length@dimprim]];
+multipartiteData[rho_,numSys_?IntegerQ]:={rho,ConstantArray[2,numSys],complementaryCover[numSys]};
 
 
-GNSCohomologyVect[rho_,dimprim_,cover_][deg_]:=GNSHomologyVect[rho,dimprim,cover][fixDegree[deg,cover]];
+cohomologicalGrading[func_][multiState__][deg_]:=Module[{multiData,cover},
+multiData=multipartiteData[multiState];
+cover=multiData[[3]];
+(func@@multiData)[fixDegree[deg,cover]]
+];
 
-GNSCohomologyVect[rho_,dimprim_][deg_]:=GNSCohomologyVect[rho,dimprim,complementaryCover[Length@dimprim]];
+
+cohomologicalGradingList[func_][multiState__]:=Module[{multiData,cover},
+multiData=multipartiteData[multiState];
+cover=multiData[[3]];
+Reverse@(func@@multiData)
+];
 
 
-comCohomologyObj[rho_,dimprim_,cover_][deg_]:=Module[{fixSimplex,cochainList},
+comCohomologyRk:=cohomologicalGrading[comHomologyRk];
+
+
+GNSCohomologyRk:=cohomologicalGrading[GNSHomologyRk];
+
+
+comCohomologyVect:=cohomologicalGrading[comHomologyVect];
+
+
+GNSCohomologyVect:=cohomologicalGrading[GNSHomologyVect];
+
+
+comCohomologyObj:=cohomologicalGrading[GNSHomologyObj];
+
+
+(* comCohomologyObj[rho_,dimprim_,cover_][deg_]:=Module[{fixSimplex,cochainList},
 fixSimplex=Complement[Range[Length@cover],#]&;
 cochainList=comHomologyObj[rho,dimprim,cover][fixDegree[deg,cover]];
 Map[#@*fixSimplex&,cochainList]
-];
+]; *)
 
 
 GNSCohomologyObj[rho_,dimprim_,cover_][deg_]:=GNSHomologyObj[rho,dimprim,cover][fixDegree[deg,cover]];
 
 
-comCohomologyRkList[rho_,dimprim_,cover_]:=Reverse@comHomologyRkList[rho,dimprim,cover];
-
-comCohomologyRkList[rho_,dimprim_]:=Reverse@comHomologyRkList[rho,dimprim,complementaryCover[Length@dimprim]];
+comCohomologyRkList:=cohomologicalGradingList[comHomologyRkList];
 
 
-GNSCohomologyRkList[rho_,dimprim_,cover_]:=Reverse@GNSHomologyRkList[rho,dimprim,cover];
-
-GNSCohomologyRkList[rho_,dimprim_]:=Reverse@GNSHomologyRkList[rho,dimprim,complementaryCover[Length@dimprim]];
+GNSCohomologyRkList:=cohomologicalGradingList[GNSHomologyRkList];
 
 
-comPoly[rho_,dimprim_,cover_][y_]:=y^(Range[0,Length@dimprim-1]).comCohomologyRkList[rho,dimprim,cover];
-
-comPoly[rho_,dimprim_]:=comPoly[rho,dimprim,complementaryCover[Length@dimprim]];
+ranksToPoly[list_][y_]:=y^(Range[0,Length@list-1]).list;
 
 
-GNSPoly[rho_,dimprim_,cover_][y_]:=y^(Range[0,Length@dimprim-1]).GNSCohomologyRkList[rho,dimprim,cover];
+comPoly:=ranksToPoly@*comCohomologyRkList;
 
-GNSPoly[rho_,dimprim_]:=GNSPoly[rho,dimprim,complementaryCover[Length@dimprim]];
+
+GNSPoly:=ranksToPoly@*GNSCohomologyRkList;
 
 
 (* ::Title:: *)
