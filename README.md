@@ -18,6 +18,12 @@ Most functions are documented.  The package `BasicStable.wl` provides useful qua
 
 `git clone https://github.com/tmainiero/homological-tools-4QM-mathematica.git`
 
+
+### From the Github web interface
+Click that fancy green ``Clone or download" button on the top right!
+Then ``Download ZIP".
+
+
 ### File by File
 
 #### From the Github web interface:
