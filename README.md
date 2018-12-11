@@ -20,8 +20,8 @@ Most functions are documented.  The package `BasicStable.wl` provides useful qua
 
 
 ### From the Github web interface
-Click that fancy green ``Clone or download" button on the top right!
-Then ``Download ZIP".
+Click that fancy green "Clone or download" button on the top right!
+Then "Download ZIP".
 
 
 ### File by File
