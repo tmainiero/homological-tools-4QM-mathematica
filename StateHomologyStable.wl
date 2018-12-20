@@ -387,7 +387,7 @@ GNSCohomologyVect:=cohomologicalGrading[GNSHomologyVect];
 comCohomologyObj:=cohomologicalGradingObj[comHomologyObj];
 
 
-GNSCohomologyObj:=cohomologicalGradingObj[comHomologyObj];
+GNSCohomologyObj:=cohomologicalGradingObj[GNSHomologyObj];
 
 
 comCohomologyRkList:=cohomologicalGradingList[comHomologyRkList];
