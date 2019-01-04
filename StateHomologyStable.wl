@@ -64,7 +64,7 @@ dimension d and calculates GNSCohomologyRk[rho,{d,...,d}][deg].
 **'d' is an integer.";
 
 
-comCohomologyVect::usage="Outputs a list of generators of 
+(* comCohomologyVect::usage="Outputs a list of generators of 
 the commutant cohomology component of fixed degree---using the Frobenius inner product on matrices
 this component is identified with a subspace of R^{d}, where d is the dimension of the cohomology component.
 The output is a list of vectors whose span is this subspace.
@@ -87,10 +87,13 @@ dimension 2 and calculates comCohomologyVect[rho,{2,...,2}][deg].
 
 --comCohomologyVect[rho,numSys,d][deg]: assumes there are numSys tensor factors with Hilbert space
 dimension d and calculates comCohomologyVect[rho,{d,...,d}][deg].
-**'d' is an integer.";
+**'d' is an integer."; 
+
+!!!FUNCTION COMMENTED DUE TO SIGN ISSUES!!!
+*)
 
 
-GNSCohomologyVect::usage="Outputs a list of generators of the GNS cohomology component of fixed degree.
+(* GNSCohomologyVect::usage="Outputs a list of generators of the GNS cohomology component of fixed degree.
 Using the Frobenius inner product on matrices this component is identified with a subspace of R^{d}, where d
 is the dimension of the cohomology component. The output is a list of vectors whose span is this subspace.
 
@@ -112,7 +115,10 @@ dimension 2 and calculates GNSCohomologyVect[rho,{2,...,2}][deg].
 
 --GNSCohomologyVect[rho,numSys,d][0]: assumes there are numSys tensor factors with Hilbert space
 dimension d and calculates GNSCohomologyVect[rho,{d,...,d}][deg].
-**'d' is an integer.";
+**'d' is an integer."; 
+
+!!!FUNCTION COMMENTED DUE TO SIGN ISSUES!!!
+*)
 
 
 comCohomologyObj::usage="Outputs a list of generators of the GNS cohomology component of fixed degree.
@@ -186,6 +192,56 @@ dimension 2 and calculates GNSCohomologyObj[rho,{2,...,2}][deg].
 
 --GNSCohomologyObj[rho,numSys,d][deg]: assumes there are numSys tensor factors with Hilbert space
 dimension d and calculates GNSCohomologyObj[rho,{d,...,d}][deg].
+**'d' is an integer.";
+
+
+GNSCohomologyGens::usage="Outputs a comlpete list of generators (i.e. a basis) of the GNS cohomology component of fixed degree.
+The output is a list, each of whose elements are lists of assignments of matrices to subsystems of size deg + 1,
+where 'deg' is the degree under consideration.
+
+This function takes in several possible classes of inputs:
+--GNSCohomologyGens[rho,dimprim][deg]:
+**'deg' is an integer: the degree of the component under consideration
+**'rho' is a positive semidefinite matrix: the density state
+**'dimprim' is a list of integers (e.g. {2,2,3}): the list of dimensions of Hilbert spaces at the tensor factors
+
+--GNSCohomologyGens[rho,dimprim,partition][deg]: computes the GNS cohomology using a coarsening of the state specified by the
+partition of tensor factors 'partition'.
+**'partition' is a list of list of integers: the partition that we wish to coarsen by, e.g. {{1,3},{2}} is a partition of three tensor
+factors merging together the first and the third subsystem, and the function would output the component of the
+resulting bipartite GNS cohomology.
+
+--GNSCohomologyGens[rho,numSys][deg]: assumes there are numSys tensor factors with Hilbert space
+dimension 2 and calculates GNSCohomologyObj[rho,{2,...,2}][deg].
+**'numSys' is an integer
+
+--GNSCohomologyGens[rho,numSys,d][deg]: assumes there are numSys tensor factors with Hilbert space
+dimension d and calculates GNSCohomologyObj[rho,{d,...,d}][deg].
+**'d' is an integer.";
+
+
+comCohomologyGens::usage="Outputs a comlpete list of generators (i.e. a basis) of the commutant cohomology component of fixed degree.
+The output is a list, each of whose elements are lists of assignments of matrices to subsystems of size deg + 1,
+where 'deg' is the degree under consideration.
+
+This function takes in several possible classes of inputs:
+--comCohomologyGens[rho,dimprim][deg]:
+**'deg' is an integer: the degree of the component under consideration
+**'rho' is a positive semidefinite matrix: the density state
+**'dimprim' is a list of integers (e.g. {2,2,3}): the list of dimensions of Hilbert spaces at the tensor factors
+
+--comCohomologyGens[rho,dimprim,partition][deg]: computes the commutant cohomology using a coarsening of the state specified by the
+partition of tensor factors 'partition'.
+**'partition' is a list of list of integers: the partition that we wish to coarsen by, e.g. {{1,3},{2}} is a partition of three tensor
+factors merging together the first and the third subsystem, and the function would output the component of the
+resulting bipartite commutant cohomology.
+
+--comCohomologyGens[rho,numSys][deg]: assumes there are numSys tensor factors with Hilbert space
+dimension 2 and calculates comCohomologyObj[rho,{2,...,2}][deg].
+**'numSys' is an integer
+
+--comCohomologyGens[rho,numSys,d][deg]: assumes there are numSys tensor factors with Hilbert space
+dimension d and calculates comCohomologyObj[rho,{d,...,d}][deg].
 **'d' is an integer.";
 
 
@@ -287,7 +343,7 @@ dimension d and calculates GNSPoly[rho,{d,...,d}][y].
 (*Function Definitions*)
 
 
-(* ::Subsection::Closed:: *)
+(* ::Subsection:: *)
 (*Homologically Graded*)
 
 
@@ -360,12 +416,20 @@ Reverse@(func@@multiData)
 ];
 
 
-cohomologicalGradingObj[func_][multiState__][deg_]:=Module[{multiData,cover,coSimplex,cochainGeneratorList},
+cohomologicalGradingObj[func_][multiState__][deg_]:=Module[{multiData,cover,coSimplex,cochainGeneratorList,signFix},
 multiData=multipartiteData[multiState];
 cover=multiData[[3]];
 coSimplex=Complement[Range[Length@cover],#]&;
 cochainGeneratorList=(func@@multiData)[fixDegree[deg,cover]];
-Map[#@*coSimplex&,cochainGeneratorList]
+signFix[obj_][cosimp_]:=(-1)^(Total@Map[#&,cosimp]+1)*obj[cosimp];
+Map[(signFix[#]@*coSimplex)&,cochainGeneratorList]
+];
+
+
+generators[func_][multiState__][deg_]:=Module[{numSys,gens},
+numSys=Length@multipartiteData[multiState][[3]];
+gens=cohomologicalGradingObj[func][multiState][deg];
+Table[Map[#->MatrixForm@gens[[b]][#]&,Subsets[Range[1,numSys],{deg+1}]],{b,1,Length@gens}]
 ];
 
 
@@ -378,16 +442,22 @@ GNSCohomologyRk:=cohomologicalGrading[GNSHomologyRk];
 GCohomologyRk:=GNSCohomologyRk;
 
 
-comCohomologyVect:=cohomologicalGrading[comHomologyVect];
+(* comCohomologyVect:=cohomologicalGrading[comHomologyVect]; *)
 
 
-GNSCohomologyVect:=cohomologicalGrading[GNSHomologyVect];
+(* GNSCohomologyVect:=cohomologicalGrading[GNSHomologyVect]; *)
 
 
 comCohomologyObj:=cohomologicalGradingObj[comHomologyObj];
 
 
 GNSCohomologyObj:=cohomologicalGradingObj[GNSHomologyObj];
+
+
+GNSCohomologyGens:=generators[GNSHomologyObj];
+
+
+comCohomologyGens:=generators[comHomologyObj];
 
 
 comCohomologyRkList:=cohomologicalGradingList[comHomologyRkList];
