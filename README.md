@@ -6,6 +6,8 @@
 ## Description
 This is a set of Mathematica packages built to compute the cohomology of the chain complexes introduced in the paper 'Homological Tools for the Quantum Mechanic' ([arXiv:1901.02011](https://arxiv.org/abs/1901.02011)).
 
+For software that can compute ranks of cohomology components in Octave/Matlab, see: <https://github.com/tmainiero/homological-tools-4QM-octave>.
+
 Unlike the Octave software, these packages are written in a functional style, and also allow one to output explicit representatives of generators of cohomology components. 
 
 An interactive quick start guide/minimal documentation is included in `quick_start.nb`.
