@@ -4,7 +4,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Description
-This is a set of Mathematica packages built to compute the cohomology of the chain complexes introduced in the paper 'Homological Tools for the Quantum Mechanic'.
+This is a set of Mathematica packages built to compute the cohomology of the chain complexes introduced in the paper 'Homological Tools for the Quantum Mechanic' ([arXiv:1901.02011](https://arxiv.org/abs/1901.02011)).
 
 Unlike the Octave software, these packages are written in a functional style, and also allow one to output explicit representatives of generators of cohomology components. 
 
