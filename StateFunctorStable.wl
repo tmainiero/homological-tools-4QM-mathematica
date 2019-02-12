@@ -74,11 +74,25 @@ stdBasis[dim_]:=If[dim==0, {{0}} , IdentityMatrix[dim]];
 (*Defining the Functors*)
 
 
+(* ::Subsection:: *)
+(*Support / Null space projections*)
+
+
 powerMod[q_]:=If[#==0,0,Power[#,q]]&;
 matrixPowerMod:=MatrixFunction[powerMod[#2],#1]&
 
 
 suppProj[rho_]:=matrixPowerMod[rho,0];
+
+
+nullProj[rho_]:=Module[{dimSys},
+dimSys:=Dimensions[rho][[1]];
+IdentityMatrix[dimSys]-suppProj[rho]
+];
+
+
+(* ::Subsection:: *)
+(*Commutant Functor*)
 
 
 endFunctorObj[rho_,dimprim_]:=homSpace[#,#]&@*(eigImage@reducedDensityMat[rho,#,dimprim]&);
@@ -90,6 +104,10 @@ supp.extendOp[#,sys1,sys2,dimprim[[sys2]]].supp&
 ];
 
 
+(* ::Subsection:: *)
+(*GNS Functor*)
+
+
 GNSFunctorObj[rho_,dimprim_][subsys_]:=Module[{reducedState}, 
 reducedState=reducedDensityMat[rho,subsys,dimprim];
 dimSys=Dimensions[reducedState][[1]];
@@ -98,6 +116,20 @@ homSpace[eigImage@reducedState,stdBasis[dimSys]]
 
 
 GNSFunctorMor[rho_,dimprim_][sys1_,sys2_]:=extendOp[#,sys1,sys2,dimprim[[sys2]]].suppProj[reducedDensityMat[rho,sys2,dimprim]]&;
+
+
+(* ::Subsection:: *)
+(*Null ideal/Left kernel Functor*)
+
+
+nullFunctorObj[rho_,dimprim_][subsys_]:=Module[{reducedState}, 
+reducedState=reducedDensityMat[rho,subsys,dimprim];
+dimSys=Dimensions[reducedState][[1]];
+homSpace[NullSpace@reducedState,stdBasis[dimSys]]
+];
+
+
+nullFunctorMor[rho_,dimprim_][sys1_,sys2_]:=extendOp[#,sys1,sys2,dimprim[[sys2]]].nullProj[reducedDensityMat[rho,sys2,dimprim]]&;
 
 
 (* ::Section:: *)
