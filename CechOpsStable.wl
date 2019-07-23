@@ -70,7 +70,7 @@ funMorMat::usage="funMorMat[funObj_,funMor_,inprod_] is application of morToMat 
 outputs the matrix associated to funMor[src,tgt].";
 
 
-(* ::Section:: *)
+(* ::Section::Closed:: *)
 (*Face and Alternating Boundary Matrices*)
 
 
@@ -97,7 +97,7 @@ see the function 'faceMatSlow'.";
 faceMatSparse::usage="";
 
 
-(* ::Section:: *)
+(* ::Section::Closed:: *)
 (*Semi-Simplicial Alternating Complex Homology*)
 
 
@@ -125,7 +125,7 @@ Begin["`Private`"];
 (*Linear Algebraic Operations*)
 
 
-stdBasis[dim_]:=If[dim==0, {{0}} , IdentityMatrix[dim]];
+stdSpan[dim_]:=If[dim==0, {{0}} , IdentityMatrix[dim]];
 
 
 zeroMat[n_,m_]:=ConstantArray[0,{n,m}];
@@ -160,10 +160,10 @@ kernelSpace[M_]:=If[NullSpace[M]==={}, {ConstantArray[0,Dimensions[M][[2]]]} , N
 
 
 vectSpInt[vsp1_,vsp2_]:=Module[{ker,coeffs,intBasis},
-ker=NullSpace@Transpose@Join[vsp1,vsp2];
-coeffs=ker[[All,1;;Length@vsp1]];
+ ker=NullSpace@Transpose@Join[vsp1,vsp2];
+ coeffs=ker[[All,1;;Length@vsp1]];
  intBasis=rowSpace@Map[#.vsp1&,coeffs];
-If[intBasis==={}||coeffs==={},{ConstantArray[0,Length@vsp1[[1]]]},intBasis]
+ If[intBasis==={}||coeffs==={},{ConstantArray[0,Length@vsp1[[1]]]},intBasis]
 ];
 
 
@@ -232,11 +232,11 @@ bdry[chain_,deg_,funMor_,cover_]:=If[deg<0, 0&,
 ];
 
 
-(* ::Section::Closed:: *)
+(* ::Section:: *)
 (*Natural Transformation to Free Module valued functor*)
 
 
-funObjVects[sourceobj_,funObj_,inprod_]:=Outer[inprod[sourceobj],funObj[sourceobj],funObj[sourceobj],1];
+funObjVects[sourceobj_,funObj_,inprod_]:=Outer[inprod[sourceobj],funObj[sourceobj],funObj[sourceobj],1]];
 
 
 vectInprod[sourceobj_,funObj_,inprod_]:=#1.funObjVects[sourceobj,funObj,inprod].#2&;
@@ -253,7 +253,7 @@ vectToElt[vect_,sourceobj_,funObj_,inprod_]:=(PseudoInverse[funObjVects[sourceob
 morToMat[src_,tgt_,mor_,funObj_,inprod_]:=Module[{morVect,dimVectSrc},
 morVect=Composition[eltToVect[#,tgt,funObj,inprod]&,mor,vectToElt[#,src,funObj,inprod]&];
 dimVectSrc=Length[funObj[src]];
-Transpose@Map[morVect, stdBasis[dimVectSrc]]
+Transpose@Map[morVect, stdSpan[dimVectSrc]]
 ];
 
 funMorMat[funObj_,funMor_,inprod_]:=morToMat[#1,#2,funMor[#1,#2],funObj,inprod]&;
@@ -302,7 +302,7 @@ Piecewise[{{zeroMat[1,rkChain[-1,funObj,cover]],srcdeg==-1&&tgtdeg<-1},
 Module[{chainMorVect,dimVectSrc},
 chainMorVect=Composition[chainToVect[#,tgtdeg,funObj,cover,inprod]&,mor,vectToChain[#,srcdeg,funObj,cover,inprod]&];
 dimVectSrc=rkChain[srcdeg,funObj,cover];
-Transpose@Map[chainMorVect, stdBasis[dimVectSrc]]
+Transpose@Map[chainMorVect, stdSpan[dimVectSrc]]
 ]
 ];
 
@@ -310,7 +310,7 @@ Transpose@Map[chainMorVect, stdBasis[dimVectSrc]]
 faceMatSlow[deg_,k_,funMor_,funObj_,cover_,inprod_]:=morOfChainToMat[deg,deg-1,face[#,k,deg,funMor,cover]&,funObj,cover,inprod];
 
 
-(* ::Subsection::Closed:: *)
+(* ::Subsection:: *)
 (*Faster Implementation of Face Map Matrix*)
 
 
@@ -376,7 +376,7 @@ altComplexVect[deg_,funObj_,funMor_,cover_,inprod_]:=Module[{dimVectSrc},
 If[deg<-1, {{0}},
 (*else*)
 dimVectSrc=Total@simpMapToList[Length@*funObj,deg,cover];
-stdBasis[dimVectSrc]
+stdSpan[dimVectSrc]
 ]
 ];
 
