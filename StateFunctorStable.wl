@@ -27,6 +27,15 @@ GNSFunctorMor::usage="GNSFunctorObj[rho,dimprim][subsys] returns a list of objec
 and list of (primitive) system dimensions dimprim.";
 
 
+nullFunctorObj::usage="nullFunctorObj[rho,dimprim][subsys] returns a list of objects of the image of the endomorphism functor associated to the subsystem 'subsys' given the state 'rho'
+and list of (primitive) system dimensions dimprim."
+
+
+nullFunctorMor::usage="nullFunctorMor[rho,dimprim][sys1,sys2] returns the morphism endFunctorObj[sys1] -> 
+nullFunctorObj[sys2] which is given by extension 'by identity operator tensoring' then compressing to the appropriate
+subspace of operators.";
+
+
 localInProd::usage="localInProd[subsys]:";
 
 
@@ -67,7 +76,7 @@ Pick[Ev[[2]],(#>0)&/@Ev[[1]]]];
 stdBasis::usage="stdBasis[dim] takes in an integer dim and returns the standard basis on a vector space of dimension dim in the form {v_1,v_2,...v_dim}
 where each of the v_i are 1 x dim arrays.";
 
-stdBasis[dim_]:=If[dim==0, {{0}} , IdentityMatrix[dim]];
+stdBasis[dim_]:=If[dim==0, {} , IdentityMatrix[dim]];
 
 
 (* ::Section:: *)
@@ -85,10 +94,10 @@ matrixPowerMod:=MatrixFunction[powerMod[#2],#1]&
 suppProj[rho_]:=matrixPowerMod[rho,0];
 
 
-nullProj[rho_]:=Module[{dimSys},
+(* nullProj[rho_]:=Module[{dimSys},
 dimSys:=Dimensions[rho][[1]];
 IdentityMatrix[dimSys]-suppProj[rho]
-];
+]; *)
 
 
 (* ::Subsection:: *)
@@ -122,14 +131,15 @@ GNSFunctorMor[rho_,dimprim_][sys1_,sys2_]:=extendOp[#,sys1,sys2,dimprim[[sys2]]]
 (*Null ideal/Left kernel Functor*)
 
 
-nullFunctorObj[rho_,dimprim_][subsys_]:=Module[{reducedState}, 
+nullFunctorObj[rho_,dimprim_][subsys_]:=Module[{reducedState,hSpan}, 
 reducedState=reducedDensityMat[rho,subsys,dimprim];
 dimSys=Dimensions[reducedState][[1]];
-homSpace[NullSpace@reducedState,stdBasis[dimSys]]
+hSpan=homSpace[NullSpace@reducedState,stdBasis[dimSys]];
+If[hSpan==={}, {ConstantArray[0,{dimSys,dimSys}]},hSpan]
 ];
 
 
-nullFunctorMor[rho_,dimprim_][sys1_,sys2_]:=extendOp[#,sys1,sys2,dimprim[[sys2]]].nullProj[reducedDensityMat[rho,sys2,dimprim]]&;
+nullFunctorMor[rho_,dimprim_][sys1_,sys2_]:=extendOp[#,sys1,sys2,dimprim[[sys2]]]&;
 
 
 (* ::Section:: *)
