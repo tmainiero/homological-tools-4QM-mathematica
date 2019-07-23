@@ -339,6 +339,12 @@ dimension d and calculates GNSPoly[rho,{d,...,d}][y].
 **'d' is an integer.";
 
 
+nullPoly;
+
+
+nullCohomologyRkList;
+
+
 (* ::Title:: *)
 (*Function Definitions*)
 
@@ -356,16 +362,25 @@ comHomologyRk[rho_,dimprim_,cover_][deg_]:=homologyRank[deg, endFunctorObj[rho,d
 GNSHomologyRk[rho_,dimprim_,cover_][deg_]:=homologyRank[deg, GNSFunctorObj[rho,dimprim], GNSFunctorMor[rho,dimprim], cover, localInProd];
 
 
+nullHomologyRk[rho_,dimprim_,cover_][deg_]:=homologyRank[deg, endFunctorObj[rho,dimprim], nullFunctorMor[rho,dimprim], cover, localInProd];
+
+
 comHomologyVect[rho_,dimprim_,cover_][deg_]:=homologyVect[deg, endFunctorObj[rho,dimprim], endFunctorMor[rho,dimprim], cover, localInProd];
 
 
 GNSHomologyVect[rho_,dimprim_,cover_][deg_]:=homologyVect[deg, GNSFunctorObj[rho,dimprim], GNSFunctorMor[rho,dimprim], cover, localInProd];
 
 
+nullHomologyVect[rho_,dimprim_,cover_][deg_]:=homologyVect[deg, nullFunctorObj[rho,dimprim], nullFunctorMor[rho,dimprim], cover, localInProd];
+
+
 comHomologyObj[rho_,dimprim_,cover_][deg_]:=homologyObj[deg, endFunctorObj[rho,dimprim], endFunctorMor[rho,dimprim], cover, localInProd];
 
 
 GNSHomologyObj[rho_,dimprim_,cover_][deg_]:=homologyObj[deg, GNSFunctorObj[rho,dimprim], GNSFunctorMor[rho,dimprim], cover, localInProd];
+
+
+nullHomologyObj[rho_,dimprim_,cover_][deg_]:=homologyObj[deg, nullFunctorObj[rho,dimprim], nullFunctorMor[rho,dimprim], cover, localInProd];
 
 
 comHomologyRkList[rho_,dimprim_,cover_]:=Module[{funMor,funObj},
@@ -378,6 +393,13 @@ Table[homologyRank[deg, funObj, funMor, cover, localInProd],{deg,-1,Length@cover
 GNSHomologyRkList[rho_,dimprim_,cover_]:=Module[{funMor,funObj},
 funObj[srcobj_]:=funObj[srcobj]=GNSFunctorObj[rho,dimprim][srcobj];
 funMor[src_,tgt_]:=funMor[src,tgt]=GNSFunctorMor[rho,dimprim][src,tgt];
+Table[homologyRank[deg, funObj, funMor, cover, localInProd],{deg,-1,Length@cover-2}]
+];
+
+
+nullHomologyRkList[rho_,dimprim_,cover_]:=Module[{funMor,funObj},
+funObj[srcobj_]:=funObj[srcobj]=nullFunctorObj[rho,dimprim][srcobj];
+funMor[src_,tgt_]:=funMor[src,tgt]=nullFunctorMor[rho,dimprim][src,tgt];
 Table[homologyRank[deg, funObj, funMor, cover, localInProd],{deg,-1,Length@cover-2}]
 ];
 
@@ -442,6 +464,12 @@ GNSCohomologyRk:=cohomologicalGrading[GNSHomologyRk];
 GCohomologyRk:=GNSCohomologyRk;
 
 
+GNSCohomologyRk:=cohomologicalGrading[GNSHomologyRk];
+
+
+nullCohomologyRk:=cohomologicalGrading[nullHomologyRk];
+
+
 (* comCohomologyVect:=cohomologicalGrading[comHomologyVect]; *)
 
 
@@ -454,16 +482,25 @@ comCohomologyObj:=cohomologicalGradingObj[comHomologyObj];
 GNSCohomologyObj:=cohomologicalGradingObj[GNSHomologyObj];
 
 
+nullCohomologyObj:=cohomologicalGradingObj[nullHomologyObj];
+
+
 GNSCohomologyGens:=generators[GNSHomologyObj];
 
 
 comCohomologyGens:=generators[comHomologyObj];
 
 
+nullCohomologyGens:=generators[nullHomologyObj];
+
+
 comCohomologyRkList:=cohomologicalGradingList[comHomologyRkList];
 
 
 GNSCohomologyRkList:=cohomologicalGradingList[GNSHomologyRkList];
+
+
+nullCohomologyRkList:=cohomologicalGradingList[nullHomologyRkList];
 
 
 ranksToPoly[list_][y_]:=y^(Range[0,Length@list-1]).list;
@@ -473,6 +510,9 @@ comPoly:=ranksToPoly@*comCohomologyRkList;
 
 
 GNSPoly:=ranksToPoly@*GNSCohomologyRkList;
+
+
+nullPoly:=ranksToPoly@*nullCohomologyRkList;
 
 
 (* ::Title:: *)
