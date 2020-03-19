@@ -28,7 +28,7 @@ and list of (primitive) system dimensions dimprim.";
 
 
 nullFunctorObj::usage="nullFunctorObj[rho,dimprim][subsys] returns a list of objects of the image of the endomorphism functor associated to the subsystem 'subsys' given the state 'rho'
-and list of (primitive) system dimensions dimprim."
+and list of (primitive) system dimensions dimprim.";
 
 
 nullFunctorMor::usage="nullFunctorMor[rho,dimprim][sys1,sys2] returns the morphism endFunctorObj[sys1] -> 
@@ -135,7 +135,7 @@ nullFunctorObj[rho_,dimprim_][subsys_]:=Module[{reducedState,hSpan},
 reducedState=reducedDensityMat[rho,subsys,dimprim];
 dimSys=Dimensions[reducedState][[1]];
 hSpan=homSpace[NullSpace@reducedState,stdBasis[dimSys]];
-If[hSpan==={}, {ConstantArray[0,{dimSys,dimSys}]},hSpan]
+If[hSpan==={}, {ConstantArray[0,{dimSys,1}]},hSpan]
 ];
 
 

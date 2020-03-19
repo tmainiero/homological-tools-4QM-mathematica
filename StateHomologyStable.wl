@@ -345,6 +345,12 @@ nullPoly;
 nullCohomologyRkList;
 
 
+nullCohomologyObj;
+
+
+nullCohomologyGens;
+
+
 (* ::Title:: *)
 (*Function Definitions*)
 

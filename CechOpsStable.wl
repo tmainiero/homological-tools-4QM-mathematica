@@ -97,7 +97,7 @@ see the function 'faceMatSlow'.";
 faceMatSparse::usage="";
 
 
-(* ::Section::Closed:: *)
+(* ::Section:: *)
 (*Semi-Simplicial Alternating Complex Homology*)
 
 
@@ -147,7 +147,7 @@ PseudoInverse[ipMatSrc].Transpose[M].ipMatTgt
 orthoComp[vspace_,ip_]:=Module[{ipMat=inprodToMat[ip,IdentityMatrix[Dimensions[vspace][[2]]]]}, NullSpace[vspace.ipMat]];
 
 
-rowSpace[M_]:=RowReduce[M][[1;;MatrixRank[M]]];
+rowSpace[M_]:=If[M==={},{},RowReduce[M][[1;;MatrixRank[M]]]];
 
 
 (*These work over the reals -- to work over the integers use HermiteDecomposition**)
@@ -236,7 +236,7 @@ bdry[chain_,deg_,funMor_,cover_]:=If[deg<0, 0&,
 (*Natural Transformation to Free Module valued functor*)
 
 
-funObjVects[sourceobj_,funObj_,inprod_]:=Outer[inprod[sourceobj],funObj[sourceobj],funObj[sourceobj],1]];
+funObjVects[sourceobj_,funObj_,inprod_]:=Outer[inprod[sourceobj],funObj[sourceobj],funObj[sourceobj],1];
 
 
 vectInprod[sourceobj_,funObj_,inprod_]:=#1.funObjVects[sourceobj,funObj,inprod].#2&;
@@ -393,7 +393,7 @@ Sum[(-1)^(k) faceMat[deg,k,funMor,funObj,cover,inprod],{k,0,deg}]
 ];
 
 
-(* ::Section::Closed:: *)
+(* ::Section:: *)
 (*Semi-Simplicial Alternating Complex Homology*)
 
 
