@@ -14,7 +14,7 @@ BeginPackage["BasicStable`"];
 (*Synonyms and Sugar*)
 
 
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*Synonyms*)
 
 
@@ -28,11 +28,11 @@ Id::usage="Id[n] is a synonym for IdentityMatrix[n].";
 IdSparse::usage="IdSparse[n] generates an n x n identity matrix as a sparse array.";
 
 
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*Sugar*)
 
 
-IdState::usage="identityState[n] generates the trace-1'identity state'/maximal von Neumann entropy
+IdState::usage="identityState[n] generates the trace 1'identity state'/maximal von Neumann entropy
 density state on n-systems: Diag(1/n,...,1/n).";
 
 
@@ -86,7 +86,7 @@ wStateDens::usage="See wStatePure.  wStateDens[N] (wStateDens[dims]) converts th
 (*Basic Operations*)
 
 
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*Permute Subsystems *)
 
 
@@ -94,7 +94,7 @@ sysPermute::usage="sysPermute[rho,perm,dim] applies a permutation 'perm' to the 
 components of rho given the dimension vector 'dim'.";
 
 
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*Partial Trace*)
 
 
@@ -110,7 +110,7 @@ list compatible with the locations of the dimensions in 'dim'.  This function ju
 to the complement of 'subsys'.";
 
 
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*Extension of Operator by the Identity/Partial Cotrace*)
 
 
@@ -126,7 +126,7 @@ matrices.";
 
 
 partialCoTraceSparse::usage = "partialCoTraceSparse[op,syscotr,dim] is the sparse version of partialCoTrace:
-instaed of tensoring by identity matrices, this function uses sparse identity matrices.  This function
+instead of tensoring by identity matrices, this function uses sparse identity matrices.  This function
 refers directly to extendOpSparse.";
 
 
@@ -154,7 +154,7 @@ Tr_systr[rho*op] given the dimension vector 'dimfull'.";
 (*Entropies and Related*)
 
 
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*von Neumann Entropy and Mutual Information*)
 
 
@@ -168,26 +168,26 @@ mutual information is defined via the alternating sum Sum[(-1)^(N-|lambda|-1) S_
  rho_lambda is the reduced density matrix on lambda.";
 
 
-(* ::Subsection:: *)
-(*Euler Characteristics of GNS and Commutant Complexes*)
+(* ::Subsection::Closed:: *)
+(*Euler Characteristics of GNS and Commutant Complexes (c.f. https://arxiv.org/abs/1901.02011)*)
 
 
-eulerCharG::usage="eulerCharG[rho_,dimprim_] computes the Euler characteristic of the GNS complex of a multipartite density state rho
+eulerCharG::usage="eulerCharG[rho,dimprim] computes the Euler characteristic of the GNS complex of a multipartite density state rho
 defined on the primitive subsystems with dimension vector 'dimprim'.";
 
 eulerCharGNS::usage="Synonym for eulerCharG.";
 
-eulerCharE::usage="eulerCharG[rho_,dimprim_] computes the Euler characteristic of the commutant complex of a multipartite density state rho
+eulerCharE::usage="eulerCharG[rho,dimprim] computes the Euler characteristic of the commutant complex of a multipartite density state rho
 defined on the primitive subsystems with dimension vector 'dimprim.'";
 
 eulerCharCom::usage="synonym for eulerCharE.";
 
 
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*q-deformed quantities*)
 
 
-(* ::Subsubsection:: *)
+(* ::Subsubsection::Closed:: *)
 (*Tsallis Entropy, the q-deformed (Tsallis) Mutual information, and related quantities*)
 
 
@@ -222,7 +222,7 @@ w^(N)*Sum_{T}(-1)^(|T|) dim(hilb_{T})^{\[Alpha]} Tr[rho_{T}^q]^r,
  subystems, and rho_T is the reduced density matrix on T.";
 
 
-(* ::Subsubsection:: *)
+(* ::Subsubsection::Closed:: *)
 (*Renyi Entropy*)
 
 
@@ -360,7 +360,7 @@ Sum[rhoint[[All,All,k]],{k,1,dimTrace^2,dimTrace+1}]
 reducedDensityMat[rho_,subsys_,dim_]:=partialTrace[rho,Complement[Range@Length[dim],subsys],dim];
 
 
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*Extension of Operator by the Identity/Partial Cotrace*)
 
 
@@ -484,7 +484,7 @@ sysPermute[tensor[rho,IdStateSparse[dimExtend]], currentPerm, dimCurrent] ]
 (*Entropies and Related*)
 
 
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*Inclusion-Exclusion Sum/Alternating Sum of Evaluations on Reduced Density Matrices*)
 
 
@@ -496,7 +496,7 @@ Total@Map[(-1)^(Length@#)*fun@reducedDensityMat[rho,#,dimprim]&,Subsets@Range[N]
 shiftedIndex[rho_,dimprim_,fun_]:=(-1)*index[rho,dimprim,fun];
 
 
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*von Neumann Entropy and Mutual Information*)
 
 
@@ -510,7 +510,7 @@ vonNeumann[rho_]:=Tr[vNMatrixKernel@rho];
 mutualInfo[rho_,dimprim_]:=shiftedIndex[rho,dimprim,vonNeumann];
 
 
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*Euler Characteristics of GNS and Commutant Complexes*)
 
 
@@ -532,7 +532,7 @@ eulerCharGNS:=eulerCharG;
 eulerCharCom:=eulerCharE;
 
 
-(* ::Subsection:: *)
+(* ::Subsection::Closed:: *)
 (*q-deformed quantities*)
 
 
