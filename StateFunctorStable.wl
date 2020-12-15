@@ -135,7 +135,7 @@ nullFunctorObj[rho_,dimprim_][subsys_]:=Module[{reducedState,hSpan},
 reducedState=reducedDensityMat[rho,subsys,dimprim];
 dimSys=Dimensions[reducedState][[1]];
 hSpan=homSpace[NullSpace@reducedState,stdBasis[dimSys]];
-If[hSpan==={}, {ConstantArray[0,{dimSys,1}]},hSpan]
+If[hSpan==={}, {ConstantArray[0,{1,dimSys}]},hSpan]
 ];
 
 

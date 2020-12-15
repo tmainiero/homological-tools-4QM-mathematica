@@ -153,7 +153,10 @@ rowSpace[M_]:=If[M==={},{},RowReduce[M][[1;;MatrixRank[M]]]];
 (*These work over the reals -- to work over the integers use HermiteDecomposition**)
 
 
-imageSpace[M_]:=rowSpace@Transpose[M];
+imageSpace[M_]:=Module[{Im},
+ Im=rowSpace@Transpose[M];
+ If[Im==={},{ConstantArray[0,Dimensions[M][[1]]]},Im]
+];
 
 
 kernelSpace[M_]:=If[NullSpace[M]==={}, {ConstantArray[0,Dimensions[M][[2]]]} , NullSpace[M]];
