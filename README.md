@@ -2,16 +2,15 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## TOC
-- [Mathematica Homological Toolbox for the Quantum Mechanic](#mathematica-homological-toolbox-for-the-quantum-mechanic)
-  * [Description](#description)
-  * [How to Download](#how-to-download)
+## Table of Contents
+* [Description](#description)
+* [How to Download](#how-to-download)
     + [Git](#git)
     + [From the Github web interface](#from-the-github-web-interface)
     + [File by file from the Github web interface:](#file-by-file-from-the-github-web-interface-)
-  * [Caveat](#caveat)
-  * [Wolfram Engine as a Mathematica Alternative](#wolfram-engine-as-a-mathematica-alternative)
-  * [Why Mathematica?](#why-mathematica-)
+* [Caveat](#caveat)
+* [Wolfram Engine as a Mathematica Alternative](#wolfram-engine-as-a-mathematica-alternative)
+* [Why Mathematica?](#why-mathematica-)
 
 ## Description
 This is a set of Mathematica packages built to compute the cohomology of the chain complexes introduced in the paper 'Homological Tools for the Quantum Mechanic' ([arXiv:1901.02011](https://arxiv.org/abs/1901.02011)).
