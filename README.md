@@ -1,10 +1,22 @@
 # Mathematica Homological Toolbox for the Quantum Mechanic
 
-## License: MIT 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+## TOC
+- [Mathematica Homological Toolbox for the Quantum Mechanic](#mathematica-homological-toolbox-for-the-quantum-mechanic)
+  * [Description](#description)
+  * [How to Download](#how-to-download)
+    + [Git](#git)
+    + [From the Github web interface](#from-the-github-web-interface)
+    + [File by file from the Github web interface:](#file-by-file-from-the-github-web-interface-)
+  * [Caveat](#caveat)
+  * [Wolfram Engine as a Mathematica Alternative](#wolfram-engine-as-a-mathematica-alternative)
+  * [Why Mathematica?](#why-mathematica-)
 
 ## Description
 This is a set of Mathematica packages built to compute the cohomology of the chain complexes introduced in the paper 'Homological Tools for the Quantum Mechanic' ([arXiv:1901.02011](https://arxiv.org/abs/1901.02011)).
+
+Don't have Mathematica? See [Wolfram Engine as a Mathematica Alternative](#wolfram-engine-as-a-mathematica-alternative).
 
 For software that can compute ranks of cohomology components in Octave/Matlab, see: <https://github.com/tmainiero/homological-tools-4QM-octave>.
 
@@ -29,20 +41,18 @@ Click that fancy green "Clone or download" button on the top right!
 Then "Download ZIP".
 
 
-### File by File
-
-#### From the Github web interface:
+### File by file from the Github web interface:
 1. Go to the file you want to download and click it to view the contents
 2. Locate the "Raw" button (On the top right at the time of writing) and right click.
 3. Save as...
 
-Make sure that all files are located in the $Path of your Mathematica directory, if not the same folder!
+Make sure that all files are located in Mathematica's `$Path` (just type `$Path` in Mathematica to see what this is).
 
 ## Caveat
 Unfortunately, this software was written before the GNS and commutant cochain complexes were fully understood.  The techniques used to compute cohomology, present in `CechOpsStable`, are meant to compute Cech *homology* of a *co*-presheaves, rather than Cech cohomology of presheaves---the latter being the technique used in the paper.  One can, however, recover the appropriate cohomology after some degree shifting (and sign corrections) in the form of some wrapper functions present in `StateHomologyStable`.  A solution to this confusion would be a rewrite of the functions in the intermediate package `CechOpsStable`; this might be planned for future versions of this software.
 
 ## Wolfram Engine as a Mathematica Alternative
-If you do not have Mathematica, there is "free" (as in free beer) alternative: namely the Wolfram Engine, which can be run as a Jupyter Kernel.
+If you do not have Mathematica, there is "free" (as in free beer) alternative: the Wolfram Engine, which can be run as a Jupyter kernel.
 See Wolfram research's official installation instructions [here](https://github.com/WolframResearch/WolframLanguageForJupyter).
 This [YouTube video](https://youtu.be/p0sXuj9lS2k?si=oHdGmbXaINLnhXmz) (circa Feb 2023) demonstrates some capabilities of this kind of setup, and [this accompanying blog post](https://arundquist.wordpress.com/2023/02/23/mathematica-for-free/) for a Window user's setup.
 
@@ -52,6 +62,7 @@ For the purposes of interacting with the code here, nothing serious is lost.
 ## Why Mathematica?
 Mathematica has a severe drawback: it is not free or open-source software.
 Among other things, this makes it inaccessible to many.
+(See [the section above](#wolfram-engine-as-a-mathematica-alternative) for an excellent workaround.)
 Yet, the choice was made to work with it for this codebase was for two reasons: 
 
 1. Its tight integration of symbolic and numerical capabilities in a streamlined interface: a somewhat key feature that allows one to explore the kind of ideas in ([arXiv:1901.02011](https://arxiv.org/abs/1901.02011)) in a streamlined fashion.
