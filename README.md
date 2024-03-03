@@ -10,7 +10,7 @@
     + [File by file from the Github web interface:](#file-by-file-from-the-github-web-interface-)
 * [Caveat](#caveat)
 * [Wolfram Engine as a Mathematica Alternative](#wolfram-engine-as-a-mathematica-alternative)
-* [Why Mathematica?](#why-mathematica?)
+* [Why Mathematica?](#why-mathematica)
 
 ## Description
 This is a set of Mathematica packages built to compute the cohomology of the chain complexes introduced in the paper 'Homological Tools for the Quantum Mechanic' ([arXiv:1901.02011](https://arxiv.org/abs/1901.02011)).
