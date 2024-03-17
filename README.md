@@ -36,7 +36,7 @@ The repository (https://github.com/tmainiero/quantum-info) contains only this pa
 
 
 ### From the Github web interface
-Click that fancy green "<> Clone" button on the top right!
+Click that fancy green "<> Code" button on the top right!
 Then "Download ZIP".
 
 
@@ -60,12 +60,12 @@ For the purposes of interacting with the code here, nothing serious is lost.
 
 ## Why Mathematica?
 Mathematica has a severe drawback: it is not free or open-source software.
-Among other things, this makes it inaccessible to many.
+Among other things, this makes it practically inaccessible to many.
 (See [the section above](#wolfram-engine-as-a-mathematica-alternative) for an excellent workaround.)
 Yet, the choice was made to work with it for this codebase was for two reasons: 
 
-1. Its tight integration of symbolic and numerical capabilities in a streamlined interface: a somewhat key feature that allows one to explore the kind of ideas in ([arXiv:1901.02011](https://arxiv.org/abs/1901.02011)) in a streamlined fashion.
-Alternatives such as SageMath just do not have this tight integration or have more serious drawbacks for implementation that requires both numerical and symbolic capabilities.
+1. Its tight integration of symbolic and numerical capabilities in a streamlined interface: a somewhat key feature that allows one to explore the kind of ideas in ([arXiv:1901.02011](https://arxiv.org/abs/1901.02011)) with ease.
+Alternatives such as SageMath just do not have this tight integration, or have implementation drawbacks when constructing software that simultaneously requires both numerical and symbolic capabilities.
 
 2. Mathematica is used widely by high-energy physicists, I'm a high-energy physicist by training and pitched the ideas of ([arXiv:1901.02011](https://arxiv.org/abs/1901.02011)) to high energy physicists first.
 
