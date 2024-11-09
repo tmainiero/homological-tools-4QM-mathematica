@@ -140,11 +140,11 @@ inprodToMat[inprod_,basis_]:=Outer[inprod,basis,basis,1];
 genAdjoint[M_,inprodsrc_,inprodtgt_]:= Module[{ipMatSrc, ipMatTgt},
 ipMatSrc=inprodToMat[inprodsrc,IdentityMatrix[Dimensions[M][[1]]]];
 ipMatTgt=inprodToMat[inprodtgt,IdentityMatrix[Dimensions[M][[2]]]];
-PseudoInverse[ipMatSrc].Transpose[M].ipMatTgt
+PseudoInverse[ipMatSrc] . Transpose[M] . ipMatTgt
 ];
 
 
-orthoComp[vspace_,ip_]:=Module[{ipMat=inprodToMat[ip,IdentityMatrix[Dimensions[vspace][[2]]]]}, NullSpace[vspace.ipMat]];
+orthoComp[vspace_,ip_]:=Module[{ipMat=inprodToMat[ip,IdentityMatrix[Dimensions[vspace][[2]]]]}, NullSpace[vspace . ipMat]];
 
 
 rowSpace[M_]:=RowReduce[M][[1;;MatrixRank[M]]];
@@ -162,7 +162,7 @@ kernelSpace[M_]:=If[NullSpace[M]==={}, {ConstantArray[0,Dimensions[M][[2]]]} , N
 vectSpInt[vsp1_,vsp2_]:=Module[{ker,coeffs,intBasis},
 ker=NullSpace@Transpose@Join[vsp1,vsp2];
 coeffs=ker[[All,1;;Length@vsp1]];
- intBasis=rowSpace@Map[#.vsp1&,coeffs];
+ intBasis=rowSpace@Map[# . vsp1&,coeffs];
 If[intBasis==={}||coeffs==={},{ConstantArray[0,Length@vsp1[[1]]]},intBasis]
 ];
 
@@ -181,7 +181,11 @@ splitFast[list_,parts_]:=Block[{accumulation=FoldList[Plus,0,parts]},Inner[Take[
 (*Cech Nerve Operations and Indexing*)
 
 
-partitionToCover[part_]:=Map[Complement[Union@@part,#]&,part];
+partitionToCover[part_]:=If[
+ Length@part==1, (*trivial partition becomes the trivial cover*)
+ part,
+ Map[Complement[Union@@part,#]&,part]
+];
 
 
 complementaryCover[n_]:=partitionToCover[Table[{i},{i,1,n}]];
@@ -239,7 +243,7 @@ bdry[chain_,deg_,funMor_,cover_]:=If[deg<0, 0&,
 funObjVects[sourceobj_,funObj_,inprod_]:=Outer[inprod[sourceobj],funObj[sourceobj],funObj[sourceobj],1];
 
 
-vectInprod[sourceobj_,funObj_,inprod_]:=#1.funObjVects[sourceobj,funObj,inprod].#2&;
+vectInprod[sourceobj_,funObj_,inprod_]:=#1 . funObjVects[sourceobj,funObj,inprod] . #2&;
 
 
 eltToVect[elt_,sourceobj_,funObj_,inprod_]:=If[elt===0,ConstantArray[0,Length@funObj[sourceobj]], 
@@ -247,7 +251,7 @@ Map[inprod[sourceobj][#,elt]&,funObj[sourceobj]]
 ];
 
 
-vectToElt[vect_,sourceobj_,funObj_,inprod_]:=(PseudoInverse[funObjVects[sourceobj,funObj,inprod]].vect).funObj[sourceobj];
+vectToElt[vect_,sourceobj_,funObj_,inprod_]:=(PseudoInverse[funObjVects[sourceobj,funObj,inprod]] . vect) . funObj[sourceobj];
 
 
 morToMat[src_,tgt_,mor_,funObj_,inprod_]:=Module[{morVect,dimVectSrc},
